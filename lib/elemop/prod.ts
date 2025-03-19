@@ -14,15 +14,19 @@ import ismatrix from "../datatype/ismatrix.ts";
  * @throws {Error} If no input arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Product of a vector
- * assert.strictEqual(prod([5, 6, 3]), 90);
+ * assertEquals(prod([5, 6, 3]), 90);
  *
  * // Example 2: Product of matrix elements along rows
  * assert.deepStrictEqual(prod([[5, 6, 5], [7, 8, -1]], 0), [150, -56]);
  *
  * // Example 3: Product of matrix elements along columns
  * assert.deepStrictEqual(prod([[5, 6, 5], [7, 8, -1]], 1), [35, 48, -5]);
- */
+
+ * ```*/
 export default function prod(x: any, dim = 1) {
   if (!x) throw new Error("Not enough input arguments");
 

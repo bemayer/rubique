@@ -14,6 +14,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no arguments are provided or the mode is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Sort an array in ascending order with indexes
  * assert.deepStrictEqual(mergesort([9, -3, 2, -12, 0, 1]), [
  *   [-12, -3, 0, 1, 2, 9],
@@ -40,7 +43,8 @@ import isarray from "../datatype/isarray.ts";
  *   [1, 2, 3, 3, 3],
  *   [1, 3, 0, 2, 4],
  * ]);
- */
+
+ * ```*/
 // @ts-expect-error TS(7023): 'mergesort' implicitly has return type 'any' becau... Remove this comment to see the full error message
 export default function mergesort(x: any, mode = "ascend") {
   if (arguments.length === 0) {

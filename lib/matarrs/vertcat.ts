@@ -11,6 +11,9 @@ import cat from "./cat.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Concatenate two matrices
  * assert.deepStrictEqual(vertcat([[5,6,5],[7,8,-1]],[[-1,3,-1],[4,5,9]]),
  *   [[5, 6, 5], [7, 8, -1], [-1, 3, -1], [4, 5, 9]]);
@@ -26,7 +29,8 @@ import cat from "./cat.ts";
  *
  * // Example 5: Invalid input (no arguments)
  * assert.throws(() => vertcat(), /Not enough input arguments./);
- */
+
+ * ```*/
 export default function vertcat(...args: any[]) {
   if (args.length === 0) {
     throw new Error("Not enough input arguments.");

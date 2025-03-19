@@ -1,40 +1,40 @@
-/**
- * Descriptive Statistic
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method iqr
-   * @summary Interquartile range
-   * @description Return the interquartile (Q3 - Q1 quartiles)
-   *
-   * @param  {array|matrix} x array of values
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array}
-   *
-   * @example
-   * var x = [ 0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   *
-   * ubique.iqr(x);
-   * // 0.023
-   *
-   * ubique.iqr(ubique.cat(0,x,y));
-   * // [ [ 0.023 ], [ 0.095 ] ]
-   */
-  $u.iqr = function (x: any, dim: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    dim = dim == null ? 0 : dim;
+import type { array, matrix, numarraymatrix } from "../types.d.ts";
+import { isnumber, prctile, vectorfun } from "../../index.ts";
 
-    // @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
-    var _iqr = function (a) {
-      return $u.prctile(a, 75) - $u.prctile(a, 25);
-    };
-    if ($u.isnumber(x)) {
-      return NaN;
-    }
-    return $u.vectorfun(dim, x, _iqr);
+/**
+ * @function iqr
+ * @summary Interquartile range
+ * @description Calculates the interquartile range (Q3 - Q1 quartiles)
+ *
+ * @param x The input array or matrix
+ * @param dim Optional dimension along which to compute the IQR. Default is 0 (rows)
+ * @returns The interquartile range value(s)
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { iqr, cat } from "../../index.ts";
+ *
+ * // Example 1: Calculate IQR of an array
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(iqr(x), 0.023);
+ *
+ * // Example 2: Calculate IQR for each row in a matrix
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(iqr(cat(0, x, y)), [[0.023], [0.095]]);
+ * ```
+ */
+export default function iqr(
+  x: numarraymatrix,
+  dim: number = 0,
+): numarraymatrix {
+  const _iqr = function (a: number[]) {
+    return prctile(a, 75) - prctile(a, 25);
   };
-};
+
+  if (isnumber(x)) {
+    return NaN;
+  }
+
+  return vectorfun(dim, x, _iqr);
+}

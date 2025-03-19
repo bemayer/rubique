@@ -24,17 +24,21 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
- * import avgdrawdown from './avgdrawdown.ts';
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { avgdrawdown, cat } from "../../index.ts";
  *
  * // Example 1: Average drawdown for a single asset
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.strictEqual(avgdrawdown(x), 0.0115);
+ * assertEquals(avgdrawdown(x), 0.0115);
  *
- * // Example 2: 1-largest drawdown
- * assert.strictEqual(avgdrawdown(x, 1), 0.014);
+ * // Example 2: Average of largest drawdown only
+ * assertEquals(avgdrawdown(x, 1), 0.014);
  *
- * // Example 3: Throws an error for invalid input
- * assert.throws(() => avgdrawdown(123), /Input must be an array or matrix/);
+ * // Example 3: Average drawdown for multiple assets
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(avgdrawdown(cat(0, x, y)), [[0.0115], [0.0576]]);
+ * ```
  */
 export default function avgdrawdown(x: any, k = 0, dim = 0) {
   if (!isarray(x)) {

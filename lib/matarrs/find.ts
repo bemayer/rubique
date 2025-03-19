@@ -14,6 +14,9 @@ import flatten from "./flatten.ts";
  * @throws {Error} If no arguments are provided or if the input is not an array or matrix.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Find indices of true elements in a 1D array
  * find([0.3, -0.4, 0.5, 0.9].map(a => a > 0)); // [0, 2, 3]
  *
@@ -28,7 +31,8 @@ import flatten from "./flatten.ts";
  *
  * // Example 5: All true elements
  * find([true, true, true]); // [0, 1, 2]
- */
+
+ * ```*/
 export default function find(x: any) {
   if (arguments.length === 0) {
     throw new Error("Not enough input arguments");

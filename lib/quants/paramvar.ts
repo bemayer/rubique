@@ -1,76 +1,85 @@
-/**
- * Risk metrics
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method paramvar
-   * @summary Parametric Value-At-Risk
-   * @description Parametric Value-At-Risk. Assets or portfolio returns are normally distributed.
-   * It manages numbers, arrays, row vectors [[a,b,...,n]] and column vectors [[a],[b],...,[n]]
-   *
-   * @param  {number|array} mu mean value (def: 0)
-   * @param  {number|array} sigma standard deviation (def: 1)
-   * @param  {number} p VaR confidende level in range [0,1] (def: 0.95)
-   * @param  {number} amount portfolio/asset amount (def: 1)
-   * @param  {number} period time horizon (def: 1)
-   * @return {number}
-   *
-   * @example
-   * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   *
-   * // VaR with numbers
-   * ubique.paramvar(0,1);
-   * // 1.644854
-   *
-   * // VaR with arrays
-   * ubique.paramvar([0,0,0],[1,2,3]);
-   * [ 1.644854, 3.289707, 4.934561 ]
-   *
-   * // parametric VaR at 95% conf level
-   * ubique.paramvar(ubique.mean(x),ubique.std(x));
-   * // 0.020311
-   *
-   * ubique.paramvar(ubique.mean(ubique.cat(0,x,y)),ubique.std(ubique.cat(0,x,y)));
-   * // [ [ 0.020311 ], [ 0.074269 ] ]
-   *
-   * //parametric VaR at 99% for 100k GBP asset over 10 days (two assets)
-   * ubique.paramvar(ubique.mean(ubique.cat(0,x,y)),ubique.std(ubique.cat(0,x,y)),0.99,100000,10);
-   * // [ [ 11429.165523 ], [ 34867.319072 ] ]
-   */
-  $u.paramvar = function (
-    mu: any,
-    sigma: any,
-    p: any,
-    amount: any,
-    period: any,
-  ) {
-    if (arguments.length < 2) {
-      throw new Error("not enough input arguments");
-    }
-    p = p == null ? 0.95 : p;
-    amount = amount == null ? 1 : amount;
-    period = period == null ? 1 : period;
+// deno-lint-ignore-file no-explicit-any
+import type { array, matrix } from "../types.d.ts";
+import {
+  flatten,
+  iscolumn,
+  ismatrix,
+  isnumber,
+  isrow,
+  norminv,
+  transpose,
+} from "../../index.ts";
 
-    // @ts-expect-error TS(7006): Parameter '_mu' implicitly has an 'any' type.
-    var _pvar = function (_mu, _sigma, p, amount, period) {
-      return (-$u.norminv(1 - p) * _sigma - _mu) * Math.sqrt(period) * amount;
-    };
-    if ($u.isnumber(mu)) {
-      return _pvar(mu, sigma, p, amount, period);
-    }
-    var temp = $u.flatten(mu);
-    // @ts-expect-error TS(7006): Parameter 'el' implicitly has an 'any' type.
-    var out = temp.map(function (el, idx) {
-      return _pvar(mu[idx], sigma[idx], p, amount, period);
-    });
-    if ($u.ismatrix(mu) && $u.isrow(mu)) {
-      return [out];
-    }
-    if ($u.ismatrix(mu) && $u.iscolumn(mu)) {
-      return $u.transpose(out);
-    }
-    return out;
+/**
+ * @function paramvar
+ * @summary Parametric Value-At-Risk
+ * @description Parametric Value-At-Risk assuming returns are normally distributed.
+ * It can work with numbers, arrays, row vectors, and column vectors.
+ *
+ * @param mu mean value (def: 0)
+ * @param sigma standard deviation (def: 1)
+ * @param p VaR confidence level in range [0,1] (def: 0.95)
+ * @param amount portfolio/asset amount (def: 1)
+ * @param period time horizon (def: 1)
+ * @return Parametric Value-At-Risk
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { paramvar, mean, std, cat } from "../../index.ts";
+ *
+ * // Example 1: VaR with default parameters
+ * assertEquals(paramvar(0,1), 1.644854);
+ *
+ * // Example 2: VaR with arrays
+ * assertEquals(paramvar([0,0,0],[1,2,3]), [1.644854, 3.289707, 4.934561]);
+ *
+ * // Example 3: Parametric VaR for a single asset
+ * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
+ * assertEquals(paramvar(mean(x), std(x)), 0.020311);
+ *
+ * // Example 4: Parametric VaR for multiple assets
+ * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
+ * assertEquals(paramvar(mean(cat(0,x,y)), std(cat(0,x,y))), [[0.020311], [0.074269]]);
+ * ```
+ */
+export default function paramvar(
+  mu: any,
+  sigma: any,
+  p: number = 0.95,
+  amount: number = 1,
+  period: number = 1,
+): any {
+  if (arguments.length < 2) {
+    throw new Error("not enough input arguments");
+  }
+
+  const _pvar = function (
+    _mu: any,
+    _sigma: any,
+    p: number,
+    amount: number,
+    period: number,
+  ) {
+    return (-norminv(1 - p) * _sigma - _mu) * Math.sqrt(period) * amount;
   };
-};
+
+  if (isnumber(mu)) {
+    return _pvar(mu, sigma, p, amount, period);
+  }
+
+  const temp = flatten(mu);
+  const out = temp.map(function (el: any, idx: number) {
+    return _pvar(mu[idx], sigma[idx], p, amount, period);
+  });
+
+  if (ismatrix(mu) && isrow(mu)) {
+    return [out];
+  }
+
+  if (ismatrix(mu) && iscolumn(mu)) {
+    return transpose(out);
+  }
+
+  return out;
+}

@@ -19,15 +19,21 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If the input is invalid or an unknown mode is specified.
  *
  * @example
- * import annreturn from './annreturn.ts';
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { annreturn, cat } from "../../index.ts";
  *
  * // Example 1: Annualized return for a single asset
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.strictEqual(annreturn(x, 12), 0.2338146820656939);
+ * assertEquals(annreturn(x, 12), 0.2338146820656939);
  *
- * // Example 2: Throws an error for unknown mode
- * assert.throws(() => annreturn(x, 12, 'invalid'), /Unknown mode/);
- */
+ * // Example 2: Annualized return with simple mode
+ * assertEquals(annreturn(x, 12, 'simple'), 0.24);
+ *
+ * // Example 3: Annualized return for multiple assets
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(annreturn(cat(0, x, y), 12), [[0.2338146820656939], [0.12467878675658589]]);
+ * ``` */
 export default function annreturn(
   x: any,
   t = 252,

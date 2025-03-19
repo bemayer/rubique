@@ -1,53 +1,63 @@
-/**
- * Data Transformation
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method ret2tick
-   * @summary Convert a return series to a value series with a start value
-   * @description  Convert a return series to a value series with a start value
-   *
-   * @param  {array|matrix} x array of elements
-   * @param  {string} mode method to compute returns. 'simple','continuous' (def: simple)
-   * @param  {number} sval start value (def: 1)
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {array|matrix}
-   *
-   * @example
-   * ubique.ret2tick([0.5,-3,2.3],'simple',100);
-   * // [ 100, 150, -300, -990 ]
-   *
-   * ubique.ret2tick([[9, 5], [6, 1]],'simple',100);
-   * // [ [ 100, 1000, 6000 ], [ 100, 700, 1400 ] ]
-   */
-  $u.ret2tick = function (x: any, mode: any, sval: any, dim: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    mode = mode == null ? "simple" : mode;
-    sval = sval == null ? 1 : sval;
-    dim = dim == null ? 0 : dim;
+// deno-lint-ignore-file no-explicit-any
+import type { array, matrix } from "../types.d.ts";
+import { isnumber, vectorfun } from "../../index.ts";
 
-    var _ret2tick = function (a: any, mode: any, sval: any) {
-      if ($u.isnumber(a)) {
-        a = [a];
+/**
+ * @function ret2tick
+ * @summary Convert a return series to a value series with a start value
+ * @description Converts a return series to a value series (prices) given a starting value.
+ * Can handle both simple and continuous (log) returns.
+ *
+ * @param x array of returns
+ * @param mode method to compute values: 'simple','continuous' (def: simple)
+ * @param sval start value (def: 1)
+ * @param dim dimension 0: row, 1: column (def: 0)
+ * @return Value series
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { ret2tick } from "../../index.ts";
+ *
+ * // Example 1: Converting returns to prices with a custom start value
+ * assertEquals(ret2tick([0.5,-3,2.3],'simple',100), [100, 150, -300, -990]);
+ *
+ * // Example 2: Converting matrix of returns to prices
+ * assertEquals(ret2tick([[9, 5], [6, 1]],'simple',100), [[100, 1000, 6000], [100, 700, 1400]]);
+ * ```
+ */
+export default function ret2tick(
+  x: any,
+  mode: string = "simple",
+  sval: number = 1,
+  dim: number = 0,
+): any {
+  if (arguments.length === 0) {
+    throw new Error("not enough input arguments");
+  }
+
+  const _ret2tick = function (a: any, mode: string, sval: number) {
+    if (isnumber(a)) {
+      a = [a];
+    }
+
+    const r = [];
+    r[0] = sval;
+
+    if (mode === "simple") {
+      for (let i = 1; i <= a.length; i++) {
+        r[i] = r[i - 1] * (1 + a[i - 1]);
       }
-      var r = [];
-      r[0] = sval;
-      if (mode === "simple") {
-        for (var i = 1; i <= a.length; i++) {
-          r[i] = r[i - 1] * (1 + a[i - 1]);
-        }
-      } else if (mode === "continuous") {
-        for (var i = 1; i <= a.length; i++) {
-          r[i] = r[i - 1] * Math.exp(a[i - 1]);
-        }
-      } else {
-        throw new Error("unknown return method");
+    } else if (mode === "continuous") {
+      for (let i = 1; i <= a.length; i++) {
+        r[i] = r[i - 1] * Math.exp(a[i - 1]);
       }
-      return r;
-    };
-    return $u.vectorfun(dim, x, _ret2tick, mode, sval);
+    } else {
+      throw new Error("unknown return method");
+    }
+
+    return r;
   };
-};
+
+  return vectorfun(dim, x, _ret2tick, mode, sval);
+}

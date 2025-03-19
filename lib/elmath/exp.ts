@@ -12,8 +12,11 @@ import isnumber from "../datatype/isnumber.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Exponential of a single number
- * assert.strictEqual(exp(6), 403.429);
+ * assertEquals(exp(6), 403.429);
  *
  * // Example 2: Exponential of an array of numbers
  * assert.deepStrictEqual(exp([5, 6, 3]), [148.413, 403.429, 20.0855]);
@@ -23,7 +26,8 @@ import isnumber from "../datatype/isnumber.ts";
  *   [148.413, 403.429, 148.413],
  *   [1096.63, 2980.96, 0.367879]
  * ]);
- */
+
+ * ```*/
 export default function exp(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

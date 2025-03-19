@@ -19,8 +19,11 @@ import rdivide from "./rdivide.ts";
  * @throws {Error} If the input dimensions are incompatible or if Y is not a square matrix when required.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Divide two numbers
- * assert.strictEqual(mrdivide(5, 6), 0.833333);
+ * assertEquals(mrdivide(5, 6), 0.833333);
  *
  * // Example 2: Divide an array by a scalar
  * assert.deepStrictEqual(mrdivide([5, 6, 3], 6), [0.833333, 1, 0.5]);
@@ -34,7 +37,8 @@ import rdivide from "./rdivide.ts";
  * // Example 5: Matrix division with two matrices
  * assert.deepStrictEqual(mrdivide([[5, 6, 5], [7, 8, -1]], [[1, 1, -1], [1, -2, 3], [2, 3, 1]]),
  *   [[-0.769231, 0.538462, 2.615385], [3.384615, 0.230769, 1.692308]]);
- */
+
+ * ```*/
 export default function mrdivide(x: any, y: any) {
   if (arguments.length < 2) {
     throw new Error("not enough input arguments");

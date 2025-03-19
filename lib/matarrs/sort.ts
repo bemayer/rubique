@@ -16,6 +16,9 @@ import mergesort from "./mergesort.ts";
  * @throws {Error} If input is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Sort an array in ascending order
  * assert.deepStrictEqual(sort([0, 5, -1, 3, -4, 9, 0], 'ascend'), [-4, -1, 0, 0, 3, 5, 9]);
  *
@@ -39,7 +42,8 @@ import mergesort from "./mergesort.ts";
  *
  * // Example 6: Invalid matrix input
  * assert.throws(() => sort(5), /Input must be an array or matrix./);
- */
+
+ * ```*/
 export default function sort(x: any, mode = "ascend", dim = 1) {
   if (!x) {
     throw new Error("Not enough input arguments.");

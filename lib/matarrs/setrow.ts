@@ -12,6 +12,9 @@
  * @throws {Error} If inputs are invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Replace the first row of a matrix
  * assert.deepStrictEqual(setrow([2, 0, -2], [[5, 6, 5], [7, 8, -1]], 0), [
  *   [2, 0, -2],
@@ -35,7 +38,8 @@
  *
  * // Example 6: Invalid row vector error
  * assert.throws(() => setrow("not a vector", [[4, 5, 6], [7, 8, 9]], 1), /Row vector must be an array./);
- */
+
+ * ```*/
 export default function setrow(x: any, mat: any, n: any) {
   if (!Array.isArray(mat) || !Array.isArray(mat[0])) {
     throw new Error("Input matrix must be a 2D array.");

@@ -22,6 +22,9 @@ import zeros from "../matarrs/zeros.ts";
  * @throws {Error} If no input arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: LU decomposition of a 2x2 square matrix
  * assert.deepStrictEqual(lu([[3, 2], [5, 2]]), {
  *   LU: [
@@ -123,7 +126,8 @@ import zeros from "../matarrs/zeros.ts";
  *
  * // Example 6: Error when input is not provided
  * assert.throws(() => lu(), Error, 'not enough input arguments');
- */
+
+ * ```*/
 export default function lu(x: any) {
   if (arguments.length === 0) {
     throw new Error("Not enough input arguments");

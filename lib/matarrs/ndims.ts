@@ -13,12 +13,16 @@ import length from "./length.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: 1D array
- * assert.strictEqual(ndims([3, 5, 6]), 2);
+ * assertEquals(ndims([3, 5, 6]), 2);
  *
  * // Example 2: 2D array
- * assert.strictEqual(ndims([[3, 2, 7], [4, 5, 6]]), 2);
- */
+ * assertEquals(ndims([[3, 2, 7], [4, 5, 6]]), 2);
+
+ * ```*/
 export default function ndims(x: any) {
   if (x === undefined) {
     throw new Error("Not enough input arguments");

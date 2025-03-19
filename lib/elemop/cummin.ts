@@ -13,6 +13,9 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Cumulative minimum of a 1D array
  * assert.deepStrictEqual(cummin([5, 6, 3]), [5, 5, 3]);
  *
@@ -21,7 +24,8 @@ import vectorfun from "../datatype/vectorfun.ts";
  *
  * // Example 3: Cumulative minimum of a matrix along rows (dim=0)
  * assert.deepStrictEqual(cummin([[5, 6, 5], [7, 8, -1]], 0), [[5, 5, 5], [7, 7, -1]]);
- */
+
+ * ```*/
 export default function cummin(x: any, dim = 1) {
   if (x === undefined) {
     throw new Error("Not enough input arguments");

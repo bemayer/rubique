@@ -13,15 +13,19 @@ import isnumber from "../datatype/isnumber.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Square root of a single number
- * assert.strictEqual(sqrt(6), 2.44949);
+ * assertEquals(sqrt(6), 2.44949);
  *
  * // Example 2: Square root of an array of numbers
  * assert.deepStrictEqual(sqrt([5, 6, 3]), [2.23607, 2.44949, 1.73205]);
  *
  * // Example 3: Square root of a matrix of numbers
  * assert.deepStrictEqual(sqrt([[5, 6, 5], [7, 8, 2]]), [[2.23607, 2.44949, 2.23607], [2.64575, 2.82843, 1.41421]]);
- */
+
+ * ```*/
 export default function sqrt(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

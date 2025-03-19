@@ -17,6 +17,9 @@ import ismatrix from "../datatype/ismatrix.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Convert a number to a matrix
  * assert.deepStrictEqual(tomat(5), [[5]]);
  *
@@ -31,7 +34,8 @@ import ismatrix from "../datatype/ismatrix.ts";
  *
  * // Example 5: Invalid input (null)
  * assert.throws(() => tomat(null), /Invalid input argument./);
- */
+
+ * ```*/
 export default function tomat(x: any) {
   if (x === undefined) {
     throw new Error("Not enough input arguments.");

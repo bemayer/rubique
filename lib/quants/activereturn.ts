@@ -17,16 +17,19 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If inputs are not valid arrays or matrices.
  *
  * @example
- * import activereturn from './activereturn.ts';
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { activereturn, cat } from "../../index.ts";
  *
  * // Example 1: Compute active return for a single portfolio and benchmark
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
  * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
- * assert.strictEqual(activereturn(x, y, 12), 0.041979);
+ * assertEquals(activereturn(x, y, 12), 0.041979);
  *
  * // Example 2: Compute active return for multiple portfolios against a benchmark
  * const z = [0.04, -0.022, 0.043, 0.028, -0.078, -0.011, 0.033, -0.049, 0.09, 0.087];
- * assert.deepStrictEqual(activereturn([x, y], z, 12), [[0.041979], [-0.046746]]);
+ * assertEquals(activereturn(cat(0, x, y), z, 12), [[0.109144], [0.000008]]);
+ * ```
  */
 export default function activereturn(
   x: any,

@@ -12,6 +12,9 @@
  * @throws {Error} If less than 2 arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Generate array from 1 to 10 with step 1
  * console.log(colon(1, 10, 1)); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
  *
@@ -23,7 +26,8 @@
  *
  * // Example 4: Generate array from -7 to 14 with step 2
  * console.log(colon(-7, 14, 2)); // [-7, -5, -3, -1, 1, 3, 5, 7, 9, 11, 13]
- */
+
+ * ```*/
 export default function colon(start: any, end: any, step = 1) {
   if (arguments.length < 2) {
     throw new Error("not enough input arguments");

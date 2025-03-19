@@ -13,6 +13,9 @@ import rem from "../elemop/rem.ts";
  * @throws {Error} If no arguments are provided or if inputs are invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Convert linear index 5 to subscripts in a 2x3 matrix
  * var a = [[5,6,5],[7,8,-1]];
  * console.log(ind2sub([2, 3], 5)); // [1, 2]
@@ -25,7 +28,8 @@ import rem from "../elemop/rem.ts";
  *
  * // Example 4: Invalid input (size is not an array)
  * // Throws error: 'size must be an array representing the matrix dimensions'
- */
+
+ * ```*/
 export default function ind2sub(size: any, index: any) {
   if (!Array.isArray(size)) {
     throw new Error("size must be an array representing the matrix dimensions");

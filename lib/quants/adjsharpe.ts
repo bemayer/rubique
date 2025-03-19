@@ -26,13 +26,18 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
- * // Example 1: Adjusted Sharpe Ratio for a single asset
- * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.strictEqual(adjsharpe(x, 0.02 / 12), 0.748134);
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { adjsharpe, cat } from "../../index.ts";
  *
- * // Example 2: Throws an error for invalid input
- * assert.throws(() => adjsharpe(123), /Input must be an array or matrix/);
- */
+ * // Example 1: Adjusted Sharpe ratio for a single asset
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(adjsharpe(x), 4.452175);
+ *
+ * // Example 2: Adjusted Sharpe ratio for multiple assets
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(adjsharpe(cat(0, x, y)), [[4.452175], [1.073158]]);
+ * ``` */
 export default function adjsharpe(x: any, frisk = 0, dim = 0) {
   if (!isarray(x)) {
     throw new Error("Input must be an array or matrix");

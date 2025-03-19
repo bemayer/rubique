@@ -16,10 +16,14 @@ import { matrix } from "../types.d.ts";
  * @throws {Error} If the input is not a square matrix or the exponent is not a scalar.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Raise a matrix to the power of 3
  * assert.deepStrictEqual(mpower([[1,1,-1],[1,-2,3],[2,3,1]], 3),
  *   [[-2, 11, -11], [11, -35, 33], [22, 33, -2]]);
- */
+
+ * ```*/
 export default function mpower(x: matrix, y: number): matrix {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

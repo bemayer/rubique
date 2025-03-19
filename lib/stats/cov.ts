@@ -1,90 +1,110 @@
+import type { array, matrix } from "../types.d.ts";
+import {
+  cat,
+  flatten,
+  isscalar,
+  isvector,
+  mean,
+  minus,
+  mtimes,
+  nrows,
+  rdivide,
+  repmat,
+  transpose,
+  varc,
+} from "../../index.ts";
+
 /**
- * Descriptive Statistic
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
- * @method cov
+ * @function cov
  * @summary Covariance matrix
- * @description Covariance matrix
+ * @description Calculates the covariance matrix of arrays or matrices
  *
- * @param  {array|matrix} x array or matrix of elemnts X
- * @param  {array|matrix} y array or matrix of elements Y
- * @param  {number} flag Bessel's correction 0: population, 1: sample (def: 1)
- * @return {number|array}
+ * @param x The first input array or matrix
+ * @param y Optional second input array or matrix or flag value (0 or 1)
+ * @param flag Optional Bessel's correction (0: population, 1: sample). Default is 1
+ * @returns The covariance matrix or scalar covariance
  *
  * @example
- * var c = [5,6,3];
- * var d = [0.5,-3,2.3];
- * var e = [[9, 5], [6, 1]];
- * var f = [[3, 2], [5, 2]];
- * var l = [[1,1,-1],[1,-2,3],[2,3,1]];
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { cov } from "../../index.ts";
  *
- * ubique.cov(c);
- * // 2.33333
+ * // Example 1: Variance of a vector
+ * const c = [5, 6, 3];
+ * assertEquals(cov(c), 2.33333);
  *
- * ubique.cov(c,d);
- * // [ [ 2.333333, -3.833333 ], [ -3.833333, 7.263333 ] ]
+ * // Example 2: Covariance between two vectors
+ * const d = [0.5, -3, 2.3];
+ * assertEquals(
+ *   cov(c, d),
+ *   [[2.333333, -3.833333], [-3.833333, 7.263333]]
+ * );
  *
- * ubique.cov(c,d,0);
- * // [ [ 1.555556, -2.555556 ], [ -2.555556, 4.842222 ] ]
-
- * ubique.cov(e,f);
- * // [ [ 10.916667, 2 ], [ 2, 2 ] ]
+ * // Example 3: Population covariance (flag = 0)
+ * assertEquals(
+ *   cov(c, d, 0),
+ *   [[1.555556, -2.555556], [-2.555556, 4.842222]]
+ * );
  *
- * ubique.cov(l);
- * // [ [ 0.333333, 1.166667, 0 ],[ 1.166667, 6.333333, -3 ],[ 0, -3, 4 ] ]
+ * // Example 4: Covariance of matrices
+ * const e = [[9, 5], [6, 1]];
+ * const f = [[3, 2], [5, 2]];
+ * assertEquals(
+ *   cov(e, f),
+ *   [[10.916667, 2], [2, 2]]
+ * );
+ *
+ * // Example 5: Covariance matrix of a single matrix
+ * const l = [[1, 1, -1], [1, -2, 3], [2, 3, 1]];
+ * assertEquals(
+ *   cov(l),
+ *   [[0.333333, 1.166667, 0], [1.166667, 6.333333, -3], [0, -3, 4]]
+ * );
+ * ```
  */
-  $u.cov = function (x: any) {
-    var arglen = arguments.length;
-    if (arglen === 0) {
-      throw new Error("not enough input arguments");
+export default function cov(
+  x: array | matrix,
+  y?: array | matrix | number,
+  flag?: number,
+): number | matrix {
+  // Process arguments to handle optional parameters
+  let actualFlag = 1; // Default flag value
+  let actualY: array | matrix | undefined = undefined;
+
+  if (typeof y === "number" && (y === 0 || y === 1)) {
+    // y is being used as the flag
+    actualFlag = y;
+  } else if (y !== undefined) {
+    // y is a second array/matrix
+    actualY = y;
+
+    if (typeof flag === "number" && (flag === 0 || flag === 1)) {
+      actualFlag = flag;
     }
-    if (arglen > 3) {
-      throw new Error("too many input arguments");
-    }
-    if (arglen === 3) {
-      // @ts-expect-error TS(2304): Cannot find name 'flag'.
-      flag = arguments[arglen - 1];
-      // @ts-expect-error TS(2304): Cannot find name 'flag'.
-      var flagrule = $u.isscalar(flag) && (flag === 0 || flag === 1);
-      if (!flagrule) {
-        throw new Error("third input must be 0 or 1");
-      }
-      arglen = arglen - 1;
-    } else if (
-      arglen === 2 && $u.isscalar(arguments[arglen - 1]) &&
-      (arguments[arglen - 1] === 0 || arguments[arglen - 1] === 1)
-    ) {
-      // @ts-expect-error TS(2304): Cannot find name 'flag'.
-      flag = arguments[arglen - 1];
-      arglen = arglen - 1;
-    } else {
-      // @ts-expect-error TS(2304): Cannot find name 'flag'.
-      flag = 1;
+  }
+
+  // Case 1: Single vector - return variance
+  if (actualY === undefined && (isvector(x))) {
+    const flatX = flatten(x);
+    return varc(flatX, actualFlag);
+  }
+
+  // Case 2: Two arrays/vectors - calculate covariance matrix
+  if (actualY !== undefined) {
+    const transposedX = transpose(flatten(x));
+    const transposedY = transpose(flatten(actualY));
+
+    if (transposedX.length !== transposedY.length) {
+      throw new Error("input dimension must agree");
     }
 
-    if (arglen === 1 && ($u.isvector(x) || $u.isvector(x))) {
-      x = $u.flatten(x);
-      return $u.varc(x);
-    }
-    if (arglen === 2) {
-      // @ts-expect-error TS(2304): Cannot find name 'y'.
-      y = arguments[1];
-      x = $u.transpose($u.flatten(x));
-      // @ts-expect-error TS(2304): Cannot find name 'y'.
-      y = $u.transpose($u.flatten(y));
-      // @ts-expect-error TS(2304): Cannot find name 'y'.
-      if (x.length !== y.length) {
-        throw new Error("input dimension must agree");
-      }
-      // @ts-expect-error TS(2304): Cannot find name 'y'.
-      x = $u.cat(1, x, y);
-    }
-    var m = $u.nrows(x);
-    var mu = $u.mean(x, 1);
-    var z = $u.minus(x, $u.repmat(mu, m, 1));
-    // @ts-expect-error TS(2304): Cannot find name 'flag'.
-    return $u.rdivide($u.mtimes($u.transpose(z), z), m - flag);
-  };
-};
+    x = cat(1, transposedX, transposedY);
+  }
+
+  // Calculate covariance matrix
+  const m = nrows(x);
+  const mu = mean(x, 1);
+  const z = minus(x, repmat(mu, m, 1));
+
+  return rdivide(mtimes(transpose(z), z), m - actualFlag);
+}

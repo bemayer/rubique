@@ -17,6 +17,9 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Flip a 1D array (dim = 1)
  * flipdim([5, 6, 3], 1); // [3, 6, 5]
  *
@@ -28,7 +31,8 @@ import vectorfun from "../datatype/vectorfun.ts";
  *
  * // Example 4: Flip a 2D matrix along rows (dim = 0)
  * flipdim([[5, 6, 5], [7, 8, -1]], 0); // [[7, 8, -1], [5, 6, 5]]
- */
+
+ * ```*/
 export default function flipdim(x: any, dim = 1) {
   if (!x) {
     throw new Error("Not enough input arguments");

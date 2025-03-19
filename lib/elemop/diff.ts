@@ -13,6 +13,9 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Differences in a 1D array
  * assert.deepStrictEqual(diff([5, 6, 3]), [1, -3]);
  *
@@ -21,7 +24,8 @@ import vectorfun from "../datatype/vectorfun.ts";
  *
  * // Example 3: Differences in a matrix along rows (dim=0)
  * assert.deepStrictEqual(diff([[5, 6, 5], [7, 8, -1]], 0), [[1, -1], [1, -9]]);
- */
+
+ * ```*/
 export default function diff(x: any, dim = 1) {
   if (!x) throw new Error("Not enough input arguments");
 

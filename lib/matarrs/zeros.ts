@@ -13,6 +13,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If invalid input arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create a 1x1 matrix of zeros (default behavior)
  * assert.deepStrictEqual(zeros(), [[0]]);
  *
@@ -24,7 +27,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 4: Create a 2x1 matrix of zeros using array input
  * assert.deepStrictEqual(zeros([2, 1]), [[0], [0]]);
- */
+
+ * ```*/
 export default function zeros(nrowsOrDims: any, ncols: any) {
   const dimensions = isarray(nrowsOrDims) ? nrowsOrDims : [nrowsOrDims ?? 1];
 

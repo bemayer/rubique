@@ -14,6 +14,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no input arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create a 0x0 matrix (empty matrix)
  * assert.deepStrictEqual(eye(0), []);
  *
@@ -28,7 +31,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 5: Create a 2x3 identity matrix
  * assert.deepStrictEqual(eye(2, 3), [[1, 0, 0], [0, 1, 0]]);
- */
+
+ * ```*/
 export default function eye(dimOrRows: any, cols: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

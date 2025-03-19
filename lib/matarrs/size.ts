@@ -17,6 +17,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no input is provided or if the input type is unknown.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Size of a 4D array
  * assert.deepStrictEqual(size([[[[5, 6, 5], [7, 8, -1]]]]), [1, 1, 2, 3]);
  *
@@ -37,7 +40,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 7: Size of an empty array
  * assert.deepStrictEqual(size([]), [0, 0]);
- */
+
+ * ```*/
 export default function size(x: any) {
   if (isundefined(x)) {
     throw new Error("Not enough input arguments");

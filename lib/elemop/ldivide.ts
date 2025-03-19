@@ -17,8 +17,11 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If fewer than two arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Single number division
- * assert.strictEqual(ldivide(5, 10), 2);
+ * assertEquals(ldivide(5, 10), 2);
  *
  * // Example 2: Scalar divided by array
  * assert.deepStrictEqual(ldivide([1, 2, 3], 6), [6, 3, 2]);
@@ -34,7 +37,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  *
  * // Example 6: Scalar divided by matrix
  * assert.deepStrictEqual(ldivide([[3, 5], [6, 1]], 3), [[1, 0.6], [0.5, 3]]);
- */
+
+ * ```*/
 export default function ldivide(x: any, y: any) {
   if (arguments.length < 2) {
     throw new Error("not enough input arguments");

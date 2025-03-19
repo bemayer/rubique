@@ -27,6 +27,9 @@ import { matrix } from "../types.d.ts";
  * @throws {Error} If the matrix is singular.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Solve a linear system with a vector
  * linsolve([[1, 1, -1], [1, -2, 3], [2, 3, 1]], transpose([5, 6, 3]));
  * // [5.846154, -2.384615, -1.538462]
@@ -38,7 +41,8 @@ import { matrix } from "../types.d.ts";
  * // Example 3: Solve a linear system with an identity matrix
  * linsolve([[1, 1, -1], [1, -2, 3], [2, 3, 1]], eye(3));
  * // [[0.846154, 0.307692, -0.0769231], [-0.384615, -0.230769, 0.307692], [-0.538462, 0.0769231, 0.230769]]
- */
+
+ * ```*/
 export default function linsolve(A: any, b: any) {
   if (arguments.length < 2) {
     throw new Error("Not enough input arguments");

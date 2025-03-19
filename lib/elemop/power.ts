@@ -16,8 +16,11 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If the input dimensions do not agree or if insufficient arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Power of two numbers
- * assert.strictEqual(power(5, 4), 625);
+ * assertEquals(power(5, 4), 625);
  *
  * // Example 2: Power of an array by a scalar
  * assert.deepStrictEqual(power([5, 6, 3], 5), [3125, 7776, 243]);
@@ -35,7 +38,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  *
  * // Example 6: Scalar raised to the power of a matrix
  * assert.deepStrictEqual(power(5, a), [[3125, 15625, 3125], [78125, 390625, 0.2]]);
- */
+
+ * ```*/
 export default function power(x: any, y: any) {
   if (arguments.length < 2) throw new Error("Not enough input arguments");
 

@@ -16,6 +16,9 @@ import size from "./size.ts";
  * @throws {Error} - Throws an error if no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Squeeze deeply nested arrays
  * assert.deepStrictEqual(squeeze([[[[[8]]]]]), [[8]]);
  *
@@ -29,14 +32,15 @@ import size from "./size.ts";
  * ]);
  *
  * // Example 4: Input is a number (no squeezing needed)
- * assert.strictEqual(squeeze(42), 42);
+ * assertEquals(squeeze(42), 42);
  *
  * // Example 5: Input is a string (no squeezing needed)
- * assert.strictEqual(squeeze("hello"), "hello");
+ * assertEquals(squeeze("hello"), "hello");
  *
  * // Example 6: Throw an error for no input arguments
  * assert.throws(() => { squeeze(); }, Error, 'Not enough input arguments');
- */
+
+ * ```*/
 export default function squeeze(x: any) {
   if (isnumber(x) || isstring(x)) {
     return x;

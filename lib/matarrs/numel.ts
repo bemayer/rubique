@@ -12,18 +12,22 @@ import size from "../matarrs/size.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Number of elements in a vector
- * assert.strictEqual(numel([3, 5, 6]), 3);
+ * assertEquals(numel([3, 5, 6]), 3);
  *
  * // Example 2: Number of elements in a matrix
- * assert.strictEqual(numel([[3, 2, 7], [4, 5, 6]]), 6);
+ * assertEquals(numel([[3, 2, 7], [4, 5, 6]]), 6);
  *
  * // Example 3: Number of elements in a 1x1 matrix
- * assert.strictEqual(numel([[42]]), 1);
+ * assertEquals(numel([[42]]), 1);
  *
  * // Example 4: Number of elements in an empty array
- * assert.strictEqual(numel([]), 0);
- */
+ * assertEquals(numel([]), 0);
+
+ * ```*/
 export default function numel(x: any) {
   if (!x) {
     throw new Error("Not enough input arguments");

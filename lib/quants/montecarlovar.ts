@@ -1,64 +1,109 @@
+// deno-lint-ignore-file no-explicit-any
+import type { array, matrix } from "../types.d.ts";
+import {
+  isnumber,
+  isundefined,
+  mean,
+  quantile,
+  rand,
+  std,
+  tick2ret,
+  vectorfun,
+  zeros,
+} from "../../index.ts";
+
 /**
- * Risk metrics
+ * @function montecarlovar
+ * @summary Monte Carlo Value-At-Risk
+ * @description Monte Carlo simulation for VaR calculation
+ *
+ * @param x array of values
+ * @param p confidence level in the range [0,1] (def: 0.95)
+ * @param nsim number of simulations (def: 1000)
+ * @param period time horizon (def: 1)
+ * @param amount amount (def: 1)
+ * @param mode calculation mode: 'simple' (default) or 'continuous'
+ * @param dim dimension 0: row, 1: column (def: 0)
+ * @return Monte Carlo Value-At-Risk
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { montecarlovar, cat } from "../../index.ts";
+ *
+ * // Example 1: Monte Carlo VaR for multiple assets
+ * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
+ * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
+ *
+ * // Note: The result will vary due to randomness in the simulation
+ * // This is a placeholder assertion to demonstrate usage
+ * const mcVar = montecarlovar(cat(0,x,y), 0.95, 10000);
+ * assertEquals(typeof mcVar[0][0], "number");
+ * assertEquals(mcVar.length, 2);
+ * ```
  */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method  montecarlovar
-   * @summary Montecarlo Value-at-Risk
-   * @description Montecarlo VaR for single asset. Based on geometric Brownian motion.
-   *
-   * @param  {number|array} x array of returns or standard deviation of returns
-   * @param  {number} p confidence level in the range [0,1] (def: 0.95)
-   * @param  {number} t holding period (def: 1)
-   * @param  {number} fr free-risk rate (def: 0)
-   * @param  {number} v asset/portfolio start value (def: 1)
-   * @param  {number} iter number of iterations
-   * @return {number}
-   *
-   * @example
-   * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   *
-   * // ex-ante simulated VaR at 95% confidence for t = 1, free risk zero, start capital one
-   * ubique.montecarlovar(x,0.95,1,0,1,10000);
-   * // 0.073219
-   *
-   * // historical simulated daily VaR at 99% for 100k GBP asset over 10 days
-   * ubique.montecarlovar(ubique.std(x),0.99,10,0,100000);
-   * // 25254.640005
-   */
-  $u.montecarlovar = function (
-    x: any,
-    p: any,
-    t: any,
-    fr: any,
-    v: any,
-    iter: any,
+export default function montecarlovar(
+  x: any,
+  p: number = 0.95,
+  nsim: number = 1000,
+  period: number = 1,
+  amount: number = 1,
+  mode: string = "simple",
+  dim: number = 0,
+): any {
+  if (arguments.length === 0) {
+    throw new Error("not enough input arguments");
+  }
+
+  const _mcvar = function (
+    a: any,
+    p: number,
+    nsim: number,
+    period: number,
+    amount: number,
+    mode: string,
   ) {
-    if (arguments.length === 0) {
-      return null;
+    // Calculate historical returns
+    const returns = tick2ret(a, mode);
+
+    // Calculate mean and standard deviation of returns
+    const mu = mean(returns);
+    const sigma = std(returns);
+
+    // Generate random returns based on normal distribution
+    const simReturns = zeros(nsim, 1);
+    for (let i = 0; i < nsim; i++) {
+      // Generate random normal return
+      const z = rand(1, "normal");
+      simReturns[i] = mu + sigma * z;
     }
-    p = p == null ? 0.95 : p;
-    t = t == null ? 1 : t;
-    fr = fr == null ? 0 : fr;
-    v = v == null ? 1 : v;
-    iter = iter == null ? 10000 : iter;
-    if ($u.isnumber(x)) {
-      // @ts-expect-error TS(2304): Cannot find name 's'.
-      s = $u.clone(x);
-    } else if ($u.isvector(x)) {
-      // @ts-expect-error TS(2304): Cannot find name 's'.
-      s = $u.std(x);
-    } else {
-      throw new Error("first argument must be a number or array");
+
+    // Convert returns to prices for the specified period
+    const simPrices = zeros(nsim, 1);
+    const lastPrice = a[a.length - 1];
+
+    if (mode === "simple") {
+      for (let i = 0; i < nsim; i++) {
+        simPrices[i] = lastPrice * Math.pow(1 + simReturns[i], period);
+      }
+    } else if (mode === "continuous") {
+      for (let i = 0; i < nsim; i++) {
+        simPrices[i] = lastPrice * Math.exp(simReturns[i] * period);
+      }
     }
-    var mcvar = [];
-    for (var i = 0; i < iter; i++) {
-      // @ts-expect-error TS(2304): Cannot find name 's'.
-      mcvar[i] = Math.exp(
-        (fr - 0.5 * Math.pow(s, 2)) + s * $u.norminv(Math.random(), 0, 1),
-      ) - 1;
+
+    // Calculate VaR as the quantile of the simulated price distribution
+    const losses = zeros(nsim, 1);
+    for (let i = 0; i < nsim; i++) {
+      losses[i] = lastPrice - simPrices[i];
     }
-    return -Math.pow(t, 0.5) * $u.prctile(mcvar, 1 - p) * v;
+
+    return quantile(losses, p) * amount;
   };
-};
+
+  if (isnumber(x)) {
+    return x;
+  }
+
+  return vectorfun(dim, x, _mcvar, p, nsim, period, amount, mode);
+}

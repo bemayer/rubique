@@ -1,53 +1,67 @@
-/**
- * Descriptive Statistic
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method prctile
-   * @summary Percentiles of a sample
-   * @description Percentiles of a sample, inclusive
-   *
-   * @param  {array|matrix} x array of emlements
-   * @param  {number} p p-th percentile in the range [0,100]
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array}
-   *
-   * @example
-   * var x = [ 0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   *
-   * ubique.prctile(x,5);
-   * // -0.014
-   *
-   * ubique.prctile(x,33);
-   * // 0.0118
-   *
-   * ubique.prctile(ubique.cat(0,x,y),5);
-   * // [ [ -0.014, -0.061 ] ]
-   */
-  $u.prctile = function (x: any, p: any, dim: any) {
-    if (arguments.length < 2) {
-      throw new Error("not enough input arguments");
-    }
-    if (p < 0 || p > 100) {
-      throw new Error(
-        "p-th percentile must be a real value between 0 and 100 inclusive",
-      );
-    }
-    dim = dim == null ? 0 : dim;
-    var _prctile = function (a: any, pr: any) {
-      var arrnum = $u.colon(0.5, a.length - 0.5);
-      var _a = $u.sort(a);
-      var pq = $u.rdivide($u.times(arrnum, 100), a.length);
+import type { array, matrix, numarraymatrix } from "../types.d.ts";
+import {
+  colon,
+  interp1,
+  isnumber,
+  rdivide,
+  sort,
+  times,
+  vectorfun,
+} from "../../index.ts";
 
-      pq = pq.concat(0, pq, 100);
-      _a = _a.concat(_a[0], _a, _a[_a.length - 1]);
-      return $u.interp1(pq, _a, pr);
-    };
-    if ($u.isnumber(x)) {
-      return x;
-    }
-    return $u.vectorfun(dim, x, _prctile, p);
+/**
+ * @function prctile
+ * @summary Percentiles of a sample
+ * @description Calculates the p-th percentile of the values in array x
+ *
+ * @param x The input array or matrix
+ * @param p The p-th percentile in the range [0,100]
+ * @param dim Optional dimension along which to compute percentiles. Default is 0 (rows)
+ * @returns The percentile value(s)
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { prctile, cat } from "../../index.ts";
+ *
+ * // Example 1: Calculate the 5th percentile of an array
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(prctile(x, 5), -0.014);
+ *
+ * // Example 2: Calculate the 33rd percentile of an array
+ * assertEquals(prctile(x, 33), 0.0118);
+ *
+ * // Example 3: Calculate the 5th percentile for each row in a matrix
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(prctile(cat(0, x, y), 5), [[-0.014, -0.061]]);
+ * ```
+ */
+export default function prctile(
+  x: numarraymatrix,
+  p: number,
+  dim: number = 0,
+): numarraymatrix {
+  if (p < 0 || p > 100) {
+    throw new Error(
+      "p-th percentile must be a real value between 0 and 100 inclusive",
+    );
+  }
+
+  const _prctile = function (a: number[], pr: number) {
+    const arrnum = colon(0.5, a.length - 0.5) as number[];
+    const _a = sort(a) as number[];
+    const pq = rdivide(times(arrnum, 100), a.length) as number[];
+
+    // Concatenate values to the beginning and end
+    const extendedPq = [0].concat(pq, [100]);
+    const extendedA = [_a[0]].concat(_a, [_a[_a.length - 1]]);
+
+    return interp1(extendedPq, extendedA, pr);
   };
-};
+
+  if (isnumber(x)) {
+    return x;
+  }
+
+  return vectorfun(dim, x, _prctile, p);
+}

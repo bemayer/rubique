@@ -12,6 +12,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no input arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create an empty array (0x0 matrix)
  * console.log(falses(0)); // []
  *
@@ -26,7 +29,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 5: Create a 2x3 matrix of `false`
  * console.log(falses(2, 3)); // [ [ false, false, false ], [ false, false, false ] ]
- */
+
+ * ```*/
 export default function falses(...args: any[]) {
   if (args.length === 0) {
     throw new Error("Not enough input arguments");

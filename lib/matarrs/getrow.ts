@@ -12,6 +12,9 @@
  * @throws {Error} - Throws an error if the input is not a matrix or if the row index is out of bounds.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Get the first row
  * assert.deepStrictEqual(getrow([[5, 6, 5], [7, 8, -1]], 0), [5, 6, 5]); // [5, 6, 5]
  *
@@ -20,7 +23,8 @@
  *
  * // Example 3: Invalid row index (out of bounds)
  * assert.throws(() => { getrow([[5, 6, 5], [7, 8, -1]], 2); }, Error, 'Row index must be an integer between 0 and N - 1 rows');
- */
+
+ * ```*/
 export default function getrow(x: any, n: any) {
   if (!x || n === undefined) {
     throw new Error("Not enough input arguments");

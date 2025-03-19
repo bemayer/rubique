@@ -18,6 +18,9 @@ import transpose from "./transpose.ts";
  * @throws {Error} If inputs are invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Replace the first column of a matrix
  * assert.deepStrictEqual(setcol([2, 0], [[5, 6, 5], [7, 8, -1]], 0), [
  *   [2, 6, 5],
@@ -41,7 +44,8 @@ import transpose from "./transpose.ts";
  *
  * // Example 6: Invalid column vector error
  * assert.throws(() => setcol("not a vector", [[4, 5], [6, 7]], 1), /Column vector must be an array./);
- */
+
+ * ```*/
 export default function setcol(x: any, mat: any, n: any) {
   if (!ismatrix(mat)) {
     throw new Error("Input matrix must be a 2D array.");

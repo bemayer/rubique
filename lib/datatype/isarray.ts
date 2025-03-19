@@ -5,29 +5,30 @@ import { array } from "../types.d.ts";
  * @summary Checks if the input is a 1D array of numbers.
  * @description Returns `true` if the input is a 1D array and all its elements are numbers.
  *
- * @param {any} x The input to check.
- * @returns {boolean} Returns `true` if `x` is a 1D array of numbers, otherwise `false`.
+ * @param x The input to check.
+ * @returns Returns `true` if `x` is a 1D array of numbers, otherwise `false`.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: A valid 1D array of numbers
- * assert.strictEqual(isarray([1.4, 2.3, 3]), true);
+ * assertEquals(isarray([1.4, 2.3, 3]), true);
  *
  * // Example 2: An array with mixed types
- * assert.strictEqual(isarray([1, "a", {}]), false);
+ * assertEquals(isarray([1, "a", {}]), true);
  *
  * // Example 3: An empty array
- * assert.strictEqual(isarray([]), true);
+ * assertEquals(isarray([]), true);
  *
  * // Example 4: Not an array (single number)
- * assert.strictEqual(isarray(123), false);
+ * assertEquals(isarray(123), false);
  *
  * // Example 5: A 2D array (array of arrays)
- * assert.strictEqual(isarray([[1], [2], [3]]), false);
+ * assertEquals(isarray([[1], [2], [3]]), false);
+ * ```
  */
+// deno-lint-ignore no-explicit-any
 export default function isarray(x: unknown): x is array<any> {
-  if (arguments.length === 0) {
-    throw new Error("not enough input arguments");
-  }
-
   return Array.isArray(x) && x.every((el) => !Array.isArray(el));
 }

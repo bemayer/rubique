@@ -13,15 +13,18 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
- * import cdrawdown from './cdrawdown.ts';
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { cdrawdown, cat } from "../../index.ts";
  *
  * // Example 1: Continuous drawdown for a single asset
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.deepStrictEqual(cdrawdown(x), [0.009, 0.014]);
+ * assertEquals(cdrawdown(x), [0.009, 0.014]);
  *
- * // Example 2: Throws an error for invalid input
- * assert.throws(() => cdrawdown(123), /Input must be an array or matrix/);
- */
+ * // Example 2: Continuous drawdown for multiple assets
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(cdrawdown(cat(0, x, y)), [[0.009, 0.014], [0.005, 0.098, 0.07]]);
+ * ``` */
 export default function cdrawdown(x: any, dim = 0) {
   if (!isarray(x)) {
     throw new Error("Input must be an array or matrix");

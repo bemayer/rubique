@@ -28,25 +28,75 @@ import lu from "./lib/linalgebra/lu.ts";
 import inv from "./lib/linalgebra/inv.ts";
 import linsolve from "./lib/linalgebra/linsolve.ts";
 import det from "./lib/linalgebra/det.ts";
+import max from "./lib/stats/max.ts";
 import mean from "./lib/stats/mean.ts";
+import mode from "./lib/stats/mode.ts";
+import pdist from "./lib/stats/pdist.ts";
+import quartile from "./lib/stats/quartile.ts";
+import median from "./lib/stats/median.ts";
+import histc from "./lib/stats/histc.ts";
+import mad from "./lib/stats/mad.ts";
+import cov from "./lib/stats/cov.ts";
+import range from "./lib/stats/range.ts";
+import zscore from "./lib/stats/zscore.ts";
 import varc from "./lib/stats/varc.ts";
+import min from "./lib/stats/min.ts";
 import moment from "./lib/stats/moment.ts";
+import corrcoef from "./lib/stats/corrcoef.ts";
 import std from "./lib/stats/std.ts";
+import prctile from "./lib/stats/prctile.ts";
+import xkurtosis from "./lib/stats/xkurtosis.ts";
 import skewness from "./lib/stats/skewness.ts";
+import iqr from "./lib/stats/iqr.ts";
 import kurtosis from "./lib/stats/kurtosis.ts";
+import quantile from "./lib/stats/quantile.ts";
 import jbtest from "./lib/probdistr/jbtest.ts";
 import norminv from "./lib/probdistr/norminv.ts";
 import normcdf from "./lib/probdistr/normcdf.ts";
 import normpdf from "./lib/probdistr/normpdf.ts";
+import painratio from "./lib/quants/painratio.ts";
+import jensenalpha from "./lib/quants/jensenalpha.ts";
 import annadjsharpe from "./lib/quants/annadjsharpe.ts";
+import trackerr from "./lib/quants/trackerr.ts";
 import activereturn from "./lib/quants/activereturn.ts";
+import twr from "./lib/quants/twr.ts";
 import avgdrawdown from "./lib/quants/avgdrawdown.ts";
+import m2sortino from "./lib/quants/m2sortino.ts";
+import ulcerindex from "./lib/quants/ulcerindex.ts";
+import toweekly from "./lib/quants/toweekly.ts";
+import sterlingratio from "./lib/quants/sterlingratio.ts";
+import calmarratio from "./lib/quants/calmarratio.ts";
 import cdrawdown from "./lib/quants/cdrawdown.ts";
+import ror from "./lib/quants/ror.ts";
+import drawdown from "./lib/quants/drawdown.ts";
+import paramcondvar from "./lib/quants/paramcondvar.ts";
+import painindex from "./lib/quants/painindex.ts";
+import martinratio from "./lib/quants/martinratio.ts";
 import annreturn from "./lib/quants/annreturn.ts";
 import annrisk from "./lib/quants/annrisk.ts";
+import paramvar from "./lib/quants/paramvar.ts";
+import ret2tick from "./lib/quants/ret2tick.ts";
 import sharpe from "./lib/quants/sharpe.ts";
+import modigliani from "./lib/quants/modigliani.ts";
+import percpos from "./lib/quants/percpos.ts";
+import omegaratio from "./lib/quants/omegaratio.ts";
+import inforatio from "./lib/quants/inforatio.ts";
+import downsidepot from "./lib/quants/downsidepot.ts";
+import irr from "./lib/quants/irr.ts";
+import hurst from "./lib/quants/hurst.ts";
+import montecarlovar from "./lib/quants/montecarlovar.ts";
+import tomonthly from "./lib/quants/tomonthly.ts";
+import sortino from "./lib/quants/sortino.ts";
 import adjsharpe from "./lib/quants/adjsharpe.ts";
+import tick2ret from "./lib/quants/tick2ret.ts";
 import burkeratio from "./lib/quants/burkeratio.ts";
+import histcondvar from "./lib/quants/histcondvar.ts";
+import upsidepot from "./lib/quants/upsidepot.ts";
+import cagr from "./lib/quants/cagr.ts";
+import mdietz from "./lib/quants/mdietz.ts";
+import downsiderisk from "./lib/quants/downsiderisk.ts";
+import histvar from "./lib/quants/histvar.ts";
+import treynor from "./lib/quants/treynor.ts";
 import ones from "./lib/matarrs/ones.ts";
 import fix from "./lib/matarrs/fix.ts";
 import reshape from "./lib/matarrs/reshape.ts";
@@ -144,12 +194,16 @@ export {
   arrayfun,
   avgdrawdown,
   burkeratio,
+  cagr,
+  calmarratio,
   cat,
   cdrawdown,
   ceil,
   clock,
   clone,
   colon,
+  corrcoef,
+  cov,
   cumdev,
   cummax,
   cummin,
@@ -162,6 +216,9 @@ export {
   diag,
   diff,
   dot,
+  downsidepot,
+  downsiderisk,
+  drawdown,
   end,
   eq,
   erf,
@@ -182,9 +239,16 @@ export {
   getcol,
   getrow,
   gt,
+  histc,
+  histcondvar,
+  histvar,
   horzcat,
+  hurst,
   ind2sub,
+  inforatio,
   inv,
+  iqr,
+  irr,
   isarray,
   iscolumn,
   isempty,
@@ -202,6 +266,7 @@ export {
   isundefined,
   isvector,
   jbtest,
+  jensenalpha,
   kurtosis,
   ldivide,
   le,
@@ -212,12 +277,22 @@ export {
   logspace,
   lt,
   lu,
+  m2sortino,
+  mad,
+  martinratio,
+  max,
+  mdietz,
   mean,
+  median,
   mergesort,
+  min,
   minus,
   mldivide,
   mod,
+  mode,
+  modigliani,
   moment,
+  montecarlovar,
   month,
   mpower,
   mrdivide,
@@ -231,16 +306,29 @@ export {
   now,
   nrows,
   numel,
+  omegaratio,
   ones,
+  painindex,
+  painratio,
+  paramcondvar,
+  paramvar,
+  pdist,
+  percpos,
   plus,
   power,
+  prctile,
   prod,
+  quantile,
+  quartile,
   rand,
   randchar,
+  range,
   rdivide,
   rem,
   repmat,
   reshape,
+  ret2tick,
+  ror,
   round,
   setcol,
   setrow,
@@ -249,24 +337,36 @@ export {
   size,
   skewness,
   sort,
+  sortino,
   sqrt,
   squeeze,
   std,
+  sterlingratio,
   strfind,
   sub2ind,
   subset,
   subsetlin,
   sum,
+  tick2ret,
   times,
   today,
   tomat,
+  tomonthly,
+  toweekly,
+  trackerr,
   transpose,
+  treynor,
   trues,
+  twr,
+  ulcerindex,
   uminus,
   unique,
+  upsidepot,
   varc,
   vectorfun,
   vertcat,
   weekday,
+  xkurtosis,
   zeros,
+  zscore,
 };

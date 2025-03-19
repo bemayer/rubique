@@ -14,17 +14,21 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If input arguments are missing or invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * var a = [[5,6,5],[7,8,-1]];
  *
  * // Example 1: Convert single 2D coordinate to linear index
- * assert.strictEqual(sub2ind([2, 3], [1, 2]), 5);
+ * assertEquals(sub2ind([2, 3], [1, 2]), 5);
  *
  * // Example 2: Convert multiple 2D coordinates to linear indices
  * assert.deepStrictEqual(sub2ind([2, 3], [[0, 0], [1, 0], [0, 1]]), [0, 1, 2]);
  *
  * // Example 3: Convert index for a row vector
- * assert.strictEqual(sub2ind([1, 3], [2, 0]), 2);
- */
+ * assertEquals(sub2ind([1, 3], [2, 0]), 2);
+
+ * ```*/
 export default function sub2ind(size: any, index: any) {
   if (!size || !index) {
     throw new Error("Not enough input arguments.");

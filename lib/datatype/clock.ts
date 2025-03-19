@@ -9,6 +9,9 @@ import type { array } from "../types.d.ts";
  * @returns  An array representing the current date and time: [year, month, day, hour, minute, seconds, milliseconds].
  *
  * @example
+ * ```ts
+ * import { assert } from "jsr:@std/assert";
+ *
  * // Example: Get the current date and time as a array
  * const currentTime = clock();
  *
@@ -17,6 +20,8 @@ import type { array } from "../types.d.ts";
  *
  * // The array should have 7 elements
  * assert(currentTime.length === 7);
+
+ * ```
  */
 export default function clock(): array {
   const now = new Date();

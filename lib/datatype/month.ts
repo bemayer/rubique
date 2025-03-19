@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import arrayfun from "./arrayfun.ts";
+import { array, matrix } from "../types.d.ts";
 
 /** @import { array, matrix } from '../types.d.ts' */
 
@@ -8,27 +9,31 @@ import arrayfun from "./arrayfun.ts";
  * @summary Extracts the month from a Unix timestamp.
  * @description Returns a number representing the month for each element in `x`. Months are 0-indexed, where January is 0 and December is 11.
  *
- * @param {number|array|matrix} x A Unix timestamp or an array/matrix of Unix timestamps.
- * @returns {number|array|matrix} The month(s) corresponding to the input timestamp(s).
+ * @param x A Unix timestamp or an array/matrix of Unix timestamps.
+ * @returns The month(s) corresponding to the input timestamp(s).
  *
- * @throws {Error} If the input is not a number, array or matrix.
+ * @throws If the input is not a number, array or matrix.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Single timestamp
- * assert.strictEqual(month(1424708525), 1);
+ * assertEquals(month(1424708525), 1);
  *
  * // Example 2: Array of timestamps
- * assert.deepStrictEqual(month([1414886399, 1414972799]), [10, 10]);
+ * assertEquals(month([1414886399, 1414972799]), [10, 10]);
  *
  * // Example 3: Matrix of timestamps
- * assert.deepStrictEqual(month([[1414886399, 1414972799], [1415059199, 1415145599]]), [[10, 10], [10, 10]]);
- */
-export default function month(x: any) {
-  if (arguments.length === 0) {
-    throw new Error("not enough input arguments");
-  }
-
-  const extractMonth = (timestamp: any) => dayjs.unix(timestamp).month();
+ * assertEquals(month([[1414886399, 1414972799], [1415059199, 1415145599]]), [[10, 10], [10, 10]]);
+ * ``` */
+export default function month(x: number): number;
+export default function month(x: array<number>): array<number>;
+export default function month(x: matrix<number>): matrix<number>;
+export default function month(
+  x: number | array<number> | matrix<number>,
+): number | array<number> | matrix<number> {
+  const extractMonth = (timestamp: number) => dayjs.unix(timestamp).month();
 
   return arrayfun(x, extractMonth);
 }

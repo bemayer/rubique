@@ -1,65 +1,70 @@
+import type { array } from "../types.d.ts";
+import { abs, max, minus, power, sqrt, sum } from "../../index.ts";
+
 /**
- * Distance metrics
+ * @function pdist
+ * @summary Pairwise distance between two sets of observations
+ * @description Computes the distance between two arrays using different methods:
+ * euclidean, manhattan, chebychev, hamming
+ *
+ * @param x The first input array
+ * @param y The second input array
+ * @param mode Optional distance method ('euclidean', 'manhattan', 'chebychev', or 'hamming'). Default is 'euclidean'
+ * @returns The distance value
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { pdist } from "../../index.ts";
+ *
+ * // Example data
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ *
+ * // Example 1: Euclidean distance
+ * assertEquals(pdist(x, y, 'euclidean'), 0.170532);
+ *
+ * // Example 2: Manhattan distance
+ * assertEquals(pdist(x, y, 'manhattan'), 0.471);
+ *
+ * // Example 3: Chebyshev distance
+ * assertEquals(pdist(x, y, 'chebychev'), 0.087);
+ *
+ * // Example 4: Hamming distance
+ * assertEquals(pdist(x, y, 'hamming'), 10);
+ * ```
  */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method pdist
-   * @summary Pairwise distance between two sets of observations
-   * @description  Compute distance between two array with differente methods:
-   * euclidean, manhattan, chebycheb, hamming
-   *
-   * @param  {array} x array of values in X
-   * @param  {array} y array of values in Y
-   * @param  {string} mode methods: 'euclidean','manhattan','chebychev','hamming' (def: 'euclidean')
-   * @return {number}
-   *
-   * @example
-   * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   *
-   * ubique.pdist(x,y,'euclidean');
-   * // 0.170532
-   *
-   * ubique.pdist(x,y,'manhattan');
-   * // 0.471
-   *
-   * ubique.pdist(x,y,'chebychev');
-   * // 0.087
-   *
-   * ubique.pdist(x,y,'hamming');
-   * // 10
-   */
-  $u.pdist = function (x: any, y: any, mode: any) {
-    if (arguments.length < 2) {
-      throw new Error("not enough input arguments");
-    }
-    mode = mode == null ? "euclidean" : mode;
-    var len = x.length;
-    var out = 0;
-    switch (mode) {
-      case "euclidean":
-        out = $u.sqrt($u.sum($u.power($u.minus(x, y), 2)));
-        return out;
-        break;
-      case "manhattan":
-        out = $u.sum($u.abs($u.minus(x, y)));
-        return out;
-        break;
-      case "chebychev":
-        out = $u.max($u.abs($u.minus(x, y)));
-        return out;
-        break;
-      case "hamming":
-        for (var i = 0; i < len; i++) {
-          if (x[i] !== y[i]) {
-            out++;
-          }
+export default function pdist(
+  x: array,
+  y: array,
+  mode: string = "euclidean",
+): number {
+  if (x.length !== y.length) {
+    throw new Error("Arrays must have the same length");
+  }
+
+  switch (mode) {
+    case "euclidean":
+      return sqrt(sum(power(minus(x, y), 2))) as number;
+
+    case "manhattan":
+      return sum(abs(minus(x, y))) as number;
+
+    case "chebychev":
+      return max(abs(minus(x, y))) as number;
+
+    case "hamming":
+      let distance = 0;
+      for (let i = 0; i < x.length; i++) {
+        if (x[i] !== y[i]) {
+          distance++;
         }
-        return out;
-        break;
-      default:
-        throw new Error("Invalid method");
-    }
-  };
-};
+      }
+      return distance;
+
+    default:
+      throw new Error(
+        "Invalid method. Must be 'euclidean', 'manhattan', 'chebychev', or 'hamming'",
+      );
+  }
+}

@@ -1,5 +1,14 @@
+// deno-lint-ignore-file no-explicit-any
 import type { array, matrix } from "../types.d.ts";
 import { isarray, ismatrix } from "../../index.ts";
+
+type MapReturnType<X, U> = X extends matrix<any> ? matrix<U>
+  : X extends array<any> ? array<U>
+  : U;
+
+type ElementType<X> = X extends matrix<infer E> ? E
+  : X extends array<infer E> ? E
+  : X;
 
 /**
  * @function arrayfun
@@ -12,12 +21,13 @@ import { isarray, ismatrix } from "../../index.ts";
  * @param  [funArgs] Additional arguments to pass to the function `fun` after the current element.
  * @returns The result of applying the function to each element of the input. Returns a array, matrix, or single value based on input.
  *
- * @throws {Error} If the input arguments are not valid.
+ * @throws If the input arguments are not valid.
  *
  * @example
  * ```ts
  * import { assertEquals } from "jsr:@std/assert";
  * import { sign, strfind } from "../../index.ts";
+ *
  * // Example 1: Apply Math.log to each element of an array
  * assertEquals(arrayfun([1.4, 2.3, 3], Math.log), [0.33647223662121284, 0.832909122935104, 1.0986122886681096]);
  *
@@ -44,26 +54,22 @@ import { isarray, ismatrix } from "../../index.ts";
  * );
  * ```
  */
-export default function arrayfun<T, U = T>(
-  x: T | array<T> | matrix<T>,
-  fun: (element: T, ...args: any[]) => U,
+export default function arrayfun<X, U>(
+  x: X,
+  fun: (element: ElementType<X>, ...args: any[]) => U,
   ...funArgs: any[]
-): U | array<U> | matrix<U> {
-  if (arguments.length < 2) {
-    throw new Error("not enough input arguments");
-  }
-
-  if (typeof fun !== "function") {
-    throw new Error("second input argument must be a function");
-  }
-
+): MapReturnType<X, U> {
   if (ismatrix(x)) {
-    return x.map((row) => row.map((element) => fun(element, ...funArgs)));
+    return x.map((row) =>
+      row.map((element) => fun(element as ElementType<X>, ...funArgs))
+    ) as MapReturnType<X, U>;
   }
 
   if (isarray(x)) {
-    return x.map((element) => fun(element, ...funArgs));
+    return x.map((element) =>
+      fun(element as ElementType<X>, ...funArgs)
+    ) as MapReturnType<X, U>;
   }
 
-  return fun(x, ...funArgs);
+  return fun(x as ElementType<X>, ...funArgs) as MapReturnType<X, U>;
 }

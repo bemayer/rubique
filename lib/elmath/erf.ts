@@ -20,21 +20,25 @@ import erfc from "./erfc.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Compute the error function for a single value
- * assert.strictEqual(erf(0.5), 0.5204999077232426);
+ * assertEquals(erf(0.5), 0.5204999077232426);
  *
  * // Example 2: Compute the error function for a negative value
- * assert.strictEqual(erf(-1), -0.8427007929497149);
+ * assertEquals(erf(-1), -0.8427007929497149);
  *
  * // Example 3: Compute the error function for zero
- * assert.strictEqual(erf(0), 0);
+ * assertEquals(erf(0), 0);
  *
  * // Example 4: Compute the error function for a large positive value
- * assert.strictEqual(erf(2), 0.9953222650189527);
+ * assertEquals(erf(2), 0.9953222650189527);
  *
  * // Example 5: Compute the error function for a large negative value
- * assert.strictEqual(erf(-2), -0.9953222650189527);
- */
+ * assertEquals(erf(-2), -0.9953222650189527);
+
+ * ```*/
 export default function erf(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

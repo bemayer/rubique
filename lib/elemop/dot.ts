@@ -16,21 +16,25 @@ import size from "../matarrs/size.ts";
  * @throws {Error} If the arrays are not of the same size.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Dot product of two 1D arrays
- * assert.strictEqual(dot([5, 6, 3], [0.5, -3, 2.3]), -8.6);
+ * assertEquals(dot([5, 6, 3], [0.5, -3, 2.3]), -8.6);
  *
  * // Example 2: Dot product of two arrays with negative numbers
- * assert.strictEqual(dot([-1, -2, -3], [-4, -5, -6]), 32);
+ * assertEquals(dot([-1, -2, -3], [-4, -5, -6]), 32);
  *
  * // Example 3: Dot product of two identical arrays
- * assert.strictEqual(dot([1, 2, 3], [1, 2, 3]), 14);
+ * assertEquals(dot([1, 2, 3], [1, 2, 3]), 14);
  *
  * // Example 4: Dot product of two arrays with zero values
- * assert.strictEqual(dot([0, 0, 0], [0, 0, 0]), 0);
+ * assertEquals(dot([0, 0, 0], [0, 0, 0]), 0);
  *
  * // Example 5: Error when input arrays are of different sizes
  * assert.throws(() => dot([1, 2], [1, 2, 3]), Error, 'input size mismatch');
- */
+
+ * ```*/
 export default function dot(x: any, y: any) {
   const xSize = size(x);
   const ySize = size(y);

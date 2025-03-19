@@ -1,41 +1,49 @@
+// deno-lint-ignore-file no-explicit-any
+import type { array, matrix } from "../types.d.ts";
+import { isnumber, minus, std, vectorfun } from "../../index.ts";
+
 /**
- * Risk metrics
+ * @function trackerr
+ * @summary Tracking Error (ex-post)
+ * @description Ex-post tracking error, which measures the standard deviation of the difference
+ * between portfolio returns and benchmark returns.
+ *
+ * @param x array or matrix of portfolio/asset returns
+ * @param y array of benchmark returns
+ * @param dim dimension 0: row, 1: column (def: 0)
+ * @return tracking error value(s)
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { trackerr, cat } from "../../index.ts";
+ *
+ * // Example 1: Single asset tracking error
+ * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
+ * var z = [0.04,-0.022,0.043,0.028,-0.078,-0.011,0.033,-0.049,0.09,0.087];
+ * assertEquals(trackerr(x,z), 0.068436);
+ *
+ * // Example 2: Multiple assets tracking error
+ * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
+ * assertEquals(trackerr(cat(0,x,y),z), [[0.068436], [0.058622]]);
+ * ```
  */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method trackerr
-   * @summary Tracking Error (ex-post)
-   * @description  Ex-post tracking error
-   *
-   * @param  {array|matrix} x array or matrix of X values
-   * @param  {array} y array of Y values
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array|matrix}
-   *
-   * @example
-   * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   * var z = [0.04,-0.022,0.043,0.028,-0.078,-0.011,0.033,-0.049,0.09,0.087];
-   * var cat = ubique.cat;
-   *
-   * ubique.trackerr(x,z);
-   * // 0.068436
-   *
-   * ubique.trackerr(cat(0,x,y),z);
-   * // [ [ 0.068436 ], [ 0.058622 ] ]
-   */
-  $u.trackerr = function (x: any, y: any, dim: any) {
-    if (arguments.length < 2) {
-      throw new Error("not enough input arguments");
-    }
-    dim = dim == null ? 0 : dim;
-    var _te = function (a: any, b: any) {
-      return $u.std($u.minus(a, b));
-    };
-    if ($u.isnumber(x)) {
-      return NaN;
-    }
-    return $u.vectorfun(dim, x, _te, y);
+export default function trackerr(
+  x: any,
+  y: array,
+  dim: number = 0,
+): any {
+  if (arguments.length < 2) {
+    throw new Error("not enough input arguments");
+  }
+
+  const _te = function (a: any, b: any) {
+    return std(minus(a, b));
   };
-};
+
+  if (isnumber(x)) {
+    return NaN;
+  }
+
+  return vectorfun(dim, x, _te, y);
+}

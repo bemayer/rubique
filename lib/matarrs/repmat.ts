@@ -13,6 +13,9 @@
  * @throws {Error} If insufficient arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Replicate a scalar value into a 3x3 matrix
  * assert.deepStrictEqual(repmat(10, 3), [
  *   [10, 10, 10],
@@ -66,7 +69,8 @@
  *   [4, 4],
  *   [4, 4]
  * ]);
- */
+
+ * ```*/
 export default function repmat(x: any, m: any, n = m) {
   if (m === undefined) {
     throw new Error("Not enough input arguments");

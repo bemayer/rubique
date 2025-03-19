@@ -14,12 +14,16 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Flip a 2D matrix left to right
  * fliplr([[1, 4], [2, 5], [3, 6]]); // [ [4, 1], [5, 2], [6, 3] ]
  *
  * // Example 2: Flip a 1D array (no change)
  * fliplr([1, 2, 3]); // [1, 2, 3]
- */
+
+ * ```*/
 export default function fliplr(x: any) {
   if (!x) {
     throw new Error("Not enough input arguments");

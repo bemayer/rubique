@@ -19,8 +19,11 @@ import nrows from "../matarrs/nrows.ts";
  * @throws {Error} If insufficient arguments are provided or if the matrix dimensions do not match.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Divide two scalars
- * assert.strictEqual(mldivide(5, 6), 6 / 5);
+ * assertEquals(mldivide(5, 6), 6 / 5);
  *
  * // Example 2: Matrix left division
  * assert.deepStrictEqual(mldivide([[9, 5], [6, 1]], [[3, 2], [5, 2]]), [[1.047619, 0.380952], [-1.285714, -0.285714]]);
@@ -30,7 +33,8 @@ import nrows from "../matarrs/nrows.ts";
  *
  * // Example 4: Matrix left division with non-square matrix
  * assert.deepStrictEqual(mldivide([[9, 5], [6, 1]], [[5, 6, 5], [7, 8, -1]]), [[1.428571, 1.619048, -0.47619], [-1.571429, -1.714286, 1.857143]]);
- */
+
+ * ```*/
 export default function mldivide(y: any, x: any) {
   if (y === undefined || x === undefined) {
     throw new Error("Not enough input arguments");

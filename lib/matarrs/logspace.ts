@@ -13,6 +13,9 @@ import linspace from "./linspace.ts";
  * @throws {Error} If fewer than two arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Logarithmically spaced points from 10^0 to 10^1 with 5 points
  * assert.deepStrictEqual(
  *   logspace(0, 1, 5),
@@ -43,7 +46,8 @@ import linspace from "./linspace.ts";
  *   logspace(3, 4, 4),
  *   [1000, 2154.4346900318847, 4641.588833612777, 10000]
  * );
- */
+
+ * ```*/
 export default function logspace(a: any, b: any, n = 10) {
   if (a === undefined || b === undefined) {
     throw new Error("Not enough input arguments");

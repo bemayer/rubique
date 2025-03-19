@@ -11,6 +11,9 @@
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create an empty array
  * assert.deepStrictEqual(trues(0), []);
  *
@@ -25,7 +28,8 @@
  *
  * // Example 5: Create a 2x3 matrix of `true`
  * assert.deepStrictEqual(trues(2,3), [[true, true, true], [true, true, true]]);
- */
+
+ * ```*/
 export default function trues(rows: any, cols: any) {
   if (arguments.length === 1) {
     cols = rows;

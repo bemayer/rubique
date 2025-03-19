@@ -23,15 +23,18 @@ import isundefined from "../datatype/isundefined.ts";
  * @throws {Error} If the input arguments are invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Extract a single element from an array
  * const c = [5, 6, 3];
- * assert.strictEqual(subset(c, 1), 6);
+ * assertEquals(subset(c, 1), 6);
  *
  * // Example 2: Extract multiple elements from an array
  * assert.deepStrictEqual(subset(c, [1, 2]), [6, 3]);
  *
  * // Example 3: Extract the last element from an array
- * assert.strictEqual(subset(c, c.length - 1), 3);
+ * assertEquals(subset(c, c.length - 1), 3);
  *
  * // Example 4: Extract a single element from a matrix
  * const a = [[5, 6, 5], [7, 8, -1]];
@@ -45,7 +48,8 @@ import isundefined from "../datatype/isundefined.ts";
  *
  * // Example 7: Extract an entire column
  * assert.deepStrictEqual(subset(a, ':', 0), [[5], [7]]);
- */
+
+ * ```*/
 export default function subset(m: any, r?: any, c?: any) {
   if (isundefined(r) && isundefined(c)) {
     return m;

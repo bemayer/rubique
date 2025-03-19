@@ -1,42 +1,50 @@
+import type { array, matrix } from "../types.d.ts";
+import { cov, diag, rdivide, repmat, sqrt, transpose } from "../../index.ts";
+
 /**
- * Descriptive Statistic
+ * @function corrcoef
+ * @summary Correlation coefficients of arrays
+ * @description Calculates the correlation coefficients between arrays or matrices
+ *
+ * @param x The first input array or matrix
+ * @param y Optional second input array or matrix
+ * @param flag Optional Bessel's correction (0: population, 1: sample). Default is 1
+ * @returns A matrix of correlation coefficients
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { corrcoef } from "../../index.ts";
+ *
+ * // Example 1: Correlation matrix of a matrix
+ * const l = [[1, 1, -1], [1, -2, 3], [2, 3, 1]];
+ * assertEquals(
+ *   corrcoef(l),
+ *   [[1, 0.802955, 0], [0.802955, 1, -0.59604], [0, -0.59604, 1]]
+ * );
+ *
+ * // Example 2: Correlation between two arrays
+ * const c = [5, 6, 3];
+ * const d = [0.5, -3, 2.3];
+ * assertEquals(
+ *   corrcoef(c, d),
+ *   [[1, -0.931151], [-0.931151, 1]]
+ * );
+ * ```
  */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method corrcoef
-   * @summary Correlation coefficients of two arrays X,Y
-   * @description Correlation coefficients of two arrays X,Y
-   *
-   * @param  {array|matrix} x array or matrix of elemnts X
-   * @param  {array|matrix} y array or matrix of elements Y
-   * @param  {number} flag Bessel's correction 0: population, 1: sample (def: 1)
-   * @return {matrix}
-   *
-   * @example
-   * var c = [5,6,3];
-   * var d = [0.5,-3,2.3];
-   * var l = [[1,1,-1],[1,-2,3],[2,3,1]];
-   *
-   * ubique.corrcoef(l);
-   * // [ [ 1, 0.802955, 0 ],[ 0.802955, 1, -0.59604 ],[ 0, -0.59604, 1 ] ]
-   *
-   * ubique.corrcoef(c,d);
-   * // [ [ 1, -0.931151 ], [ -0.931151, 1 ] ]
-   */
-  $u.corrcoef = function (x: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    var _args = [x];
-    for (var i = 1; i < arguments.length; i++) {
-      _args.push(arguments[i]);
-    }
-    var covm = $u.cov.apply(null, _args);
-    var sigma = $u.transpose($u.sqrt($u.diag(covm)));
-    var m = sigma.length;
-    covm = $u.rdivide(covm, $u.repmat(sigma, 1, m));
-    covm = $u.rdivide(covm, $u.repmat($u.transpose(sigma), m, 1));
-    return covm;
-  };
-};
+export default function corrcoef(
+  x: array | matrix,
+  y?: array | matrix,
+  flag: number = 1,
+): matrix {
+  // If y is provided, pass both x and y to cov, otherwise just x
+  const covm = y !== undefined ? cov(x, y, flag) : cov(x, flag);
+
+  const sigma = transpose(sqrt(diag(covm)));
+  const m = sigma.length;
+
+  let result = rdivide(covm, repmat(sigma, 1, m));
+  result = rdivide(result, repmat(transpose(sigma), m, 1));
+
+  return result;
+}

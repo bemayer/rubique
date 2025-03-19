@@ -1,47 +1,49 @@
-/**
- * Descriptive Statistic
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method median
-   * @summary Median value of array
-   * @description Median value of array
-   *
-   * @param  {array|matrix} x array of values
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array}
-   *
-   * @example
-   * ubique.median([5,6,3]);
-   * // 4.66667
-   *
-   * ubique.median([[5,6,5],[7,8,-1]]);
-   * // [ [ 5 ], [ 7 ] ]
-   *
-   * ubique.median([[5,6,5],[7,8,-1]],1);
-   * // [ [ 6, 7, 2 ] ]
-   */
-  $u.median = function (x: any, dim: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    dim = dim == null ? 0 : dim;
+import type { array, matrix, numarraymatrix } from "../types.d.ts";
+import { isnumber, max, sort, vectorfun } from "../../index.ts";
 
-    // @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
-    var _median = function (a) {
-      var n = a.length - 1;
-      var idx = $u.max(1, Math.floor(n / 2));
-      var _a = $u.sort(a);
-      if (n % 2 === 0) {
-        return _a[idx];
-      } else {
-        return (_a[idx - 1] + _a[idx]) / 2;
-      }
-    };
-    if ($u.isnumber(x)) {
-      return x;
+/**
+ * @function median
+ * @summary Median value of array
+ * @description Computes the median value of array
+ *
+ * @param x The input array or matrix
+ * @param dim Optional dimension along which to compute the median. Default is 0 (rows)
+ * @returns The median value(s)
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { median } from "../../index.ts";
+ *
+ * // Example 1: Find median in a 1D array
+ * assertEquals(median([5, 6, 3]), 5);
+ *
+ * // Example 2: Find median in each row of a matrix (dim=0, default)
+ * assertEquals(median([[5, 6, 5], [7, 8, -1]]), [[5], [7]]);
+ *
+ * // Example 3: Find median in each column of a matrix (dim=1)
+ * assertEquals(median([[5, 6, 5], [7, 8, -1]], 1), [[6, 7, 2]]);
+ * ```
+ */
+export default function median(
+  x: numarraymatrix,
+  dim: number = 0,
+): numarraymatrix {
+  const _median = function (a: number[]) {
+    const n = a.length - 1;
+    const idx = max(1, Math.floor(n / 2)) as number;
+    const _a = sort(a);
+
+    if (n % 2 === 0) {
+      return _a[idx];
+    } else {
+      return (_a[idx - 1] + _a[idx]) / 2;
     }
-    return $u.vectorfun(dim, x, _median);
   };
-};
+
+  if (isnumber(x)) {
+    return x;
+  }
+
+  return vectorfun(dim, x, _median);
+}

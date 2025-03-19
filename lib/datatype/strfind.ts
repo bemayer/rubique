@@ -12,26 +12,31 @@
  * @throws {Error} If the input arguments are invalid or the pattern is longer than the string.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Basic usage with multiple occurrences
- * assert.deepStrictEqual(strfind('find indices in the string', 'in'), [1, 5, 13, 23]);
+ * assertEquals(strfind('find indices in the string', 'in'), [1, 5, 13, 23]);
  *
  * // Example 2: Pattern appears only once
- * assert.deepStrictEqual(strfind('hello world', 'world'), [6]);
+ * assertEquals(strfind('hello world', 'world'), [6]);
  *
  * // Example 3: Pattern does not appear
- * assert.deepStrictEqual(strfind('hello world', 'notfound'), []);
+ * assertEquals(strfind('hello world', 'notfound'), []);
  *
  * // Example 4: Pattern is longer than the string
- * assert.strictEqual(strfind('short', 'longpattern'), null);
+ * assertEquals(strfind('short', 'longpattern'), null);
  *
  * // Example 5: Invalid input (non-string arguments)
  * try {
+ *   // @ts-ignore - testing error case
  *   strfind(123, '12');
  * } catch (e) {
- *   assert.strictEqual(e.message, 'Both arguments must be strings');
+ *   // Type assertion needed for error object
+ *   assertEquals((e as Error).message, 'Both arguments must be strings');
  * }
- */
-export default function strfind(str: any, pattern: any) {
+ * ``` */
+export default function strfind(str: string, pattern: string) {
   if (typeof str !== "string" || typeof pattern !== "string") {
     throw new Error("Both arguments must be strings");
   }

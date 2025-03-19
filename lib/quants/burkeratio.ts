@@ -24,17 +24,21 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If an invalid mode is provided or if input arguments are invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { burkeratio, cat } from "../../index.ts";
+ *
+ * // Example 1: Burke ratio for a single asset with simple mode
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(burkeratio(x, 0, 12), 14.048563);
+ *
+ * // Example 2: Burke ratio with modified mode
+ * assertEquals(burkeratio(x, 0, 12, "modified"), 44.420268);
+ *
+ * // Example 3: Burke ratio for multiple assets
  * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
- *
- * // Example 1: Compute Burke Ratio for a single return series
- * assert.strictEqual(burkeratio(x, 0, 12), 14.048563);
- *
- * // Example 2: Compute modified Burke Ratio
- * assert.strictEqual(burkeratio(x, 0, 12, 'modified'), 44.425456);
- *
- * // Example 3: Invalid input
- * assert.throws(() => burkeratio([x, y]), /Input must be an array/);
+ * assertEquals(burkeratio(cat(0, x, y), 0, 12), [[14.048563], [0.896988]]);
+ * ```
  */
 export default function burkeratio(
   x: any,

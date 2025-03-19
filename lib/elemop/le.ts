@@ -14,8 +14,11 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If fewer than two arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Comparison between two numbers
- * assert.strictEqual(le(5, 5), true);
+ * assertEquals(le(5, 5), true);
  *
  * // Example 2: Comparison between a number and an array
  * assert.deepStrictEqual(le(5, [5, 6, 3]), [true, true, false]);
@@ -34,7 +37,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  *
  * // Example 7: Comparison between two matrices
  * assert.deepStrictEqual(le([[5, 6], [-1, 2]], [[5, 6], [3, 5]]), [[true, true], [true, true]]);
- */
+
+ * ```*/
 export default function le(x: any, y: any) {
   if (arguments.length < 2) {
     throw new Error("not enough input arguments");

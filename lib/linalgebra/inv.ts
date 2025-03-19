@@ -16,6 +16,9 @@ import eye from "../matarrs/eye.ts";
  * @throws {Error} If no arguments are provided or if the input is not a square matrix.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Inverse of a 2x2 matrix
  * assert.deepStrictEqual(inv([[3, 2], [5, 2]]), [[-0.5, 0.5], [1.25, -0.7499999999999999]]);
  *
@@ -27,14 +30,15 @@ import eye from "../matarrs/eye.ts";
  * ]);
  *
  * // Example 3: Inverse of a number
- * assert.strictEqual(inv(4), 0.25);
+ * assertEquals(inv(4), 0.25);
  *
  * // Example 4: Error when input is not square matrix
  * assert.throws(() => inv([[1, 2]]), Error, 'matrix must be square');
  *
  * // Example 5: Error when no arguments are provided
  * assert.throws(() => inv(), Error, 'not enough input arguments');
- */
+
+ * ```*/
 export default function inv(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

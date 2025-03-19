@@ -15,6 +15,9 @@ import { array, matrix, numarraymatrix } from "../types.d.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Clone a matrix
  * assert.deepStrictEqual(clone([[-1, 3, -1], [4, 5, 9]]), [[-1, 3, -1], [4, 5, 9]]);
  *
@@ -22,8 +25,9 @@ import { array, matrix, numarraymatrix } from "../types.d.ts";
  * assert.deepStrictEqual(clone([5, 6, 3]), [5, 6, 3]);
  *
  * // Example 3: Clone a single number
- * assert.strictEqual(clone(5), 5);
- */
+ * assertEquals(clone(5), 5);
+
+ * ```*/
 export default function clone<T extends numarraymatrix>(x: T): T {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

@@ -16,6 +16,9 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If fewer than two arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Modulus of a vector with a scalar divisor
  * assert.deepStrictEqual(mod([13, -7], 2.2), [2, 1.8]);
  *
@@ -26,7 +29,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  * const a = [[5, 6, 5], [7, 8, -1]];
  * const b = [[-1, 3, -1], [4, 5, 9]];
  * assert.deepStrictEqual(mod(a, b), [[0, 0, 0], [3, 3, 8]]);
- */
+
+ * ```*/
 export default function mod(x: any, y: any) {
   if (x === undefined || y === undefined) {
     throw new Error("Not enough input arguments");

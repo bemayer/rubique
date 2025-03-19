@@ -2,39 +2,55 @@
  * Time Series Analysis
  */
 // @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method tomonthly
-   * @summary Convert a time series to a monthly frequency
-   * @description Convert a time series to a monthly frequency. Default: all days
-   * in the range.
-   *
-   * @param  {array} nd array of unix dates
-   * @param  {array|matrix} nv array or matrix of values
-   * @return {matrix}
-   *
-   * @example
-   * ubique.tomonthly(ubique.datenum(['15-01-18','15-02-28','15-03-05','15-03-24','15-04-27'],'YY-MM-DD'),[100,99,102,103,98]);
-   * // [ [ 1421539200, 1425081600, 1427155200, 1430092800 ], [ 100, 99, 103, 98 ] ]
-   */
-  $u.tomonthly = function (nd: any, nv: any) {
-    if (arguments.length < 2) {
-      throw new Error("not enough input arguments");
+// deno-lint-ignore-file no-explicit-any
+import type { array, matrix } from "../types.d.ts";
+import { cat, isnumber, isundefined, sum } from "../../index.ts";
+
+/**
+ * @function tomonthly
+ * @summary Convert a return series to a monthly series
+ * @description Convert a return series to a monthly series (e.g. from daily to monthly)
+ *
+ * @param x array of values
+ * @param mode calculation mode: 'simple' (default) or 'continuous'
+ * @return monthly series
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { tomonthly } from "../../index.ts";
+ *
+ * // Example 1: Convert daily returns to monthly returns using simple mode
+ * var dailyReturns = [
+ *   0.001, 0.002, -0.001, 0.004, 0.005, // Week 1
+ *   0.002, -0.003, 0.001, 0.002, 0.004, // Week 2
+ *   0.003, 0.001, -0.002, 0.003, 0.002, // Week 3
+ *   0.001, 0.004, 0.003, -0.001, 0.002  // Week 4
+ * ];
+ * assertEquals(tomonthly(dailyReturns), 0.0288);
+ *
+ * // Example 2: Convert daily returns to monthly returns using continuous mode
+ * assertEquals(tomonthly(dailyReturns, "continuous"), 0.0284);
+ * ```
+ */
+export default function tomonthly(x: any, mode: string = "simple"): any {
+  if (arguments.length === 0) {
+    throw new Error("not enough input arguments");
+  }
+
+  if (isnumber(x)) {
+    return x;
+  }
+
+  if (mode === "simple") {
+    let monthly = 1;
+    for (let i = 0; i < x.length; i++) {
+      monthly *= 1 + x[i];
     }
-    // basic mode: all data, exact on last day of month
-    var md = $u.month(nd);
-    var df = $u.diff(md);
-    df[0] = 1;
-    df = $u.cat(1, df, 1)[0];
-    var idx = $u.find(df.map(function (el: any) {
-      return el !== 0;
-    }));
-    if ($u.isvector(nv)) {
-      var newv = $u.subset(nv, idx);
-    }
-    if ($u.ismatrix(nv)) {
-      var newv = $u.subset(nv, idx, ":");
-    }
-    return [$u.subset(nd, idx), newv];
-  };
-};
+    return monthly - 1;
+  } else if (mode === "continuous") {
+    return sum(x);
+  } else {
+    throw new Error("unknown return method");
+  }
+}

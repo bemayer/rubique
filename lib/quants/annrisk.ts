@@ -25,13 +25,17 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Annualized risk for a single asset
  * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.strictEqual(annrisk(x, 12), 0.08047276972160623);
+ * assertEquals(annrisk(x, 12), 0.08047276972160623);
  *
  * // Example 2: Throws an error for invalid input
  * assert.throws(() => annrisk(123), /Input must be an array or matrix/);
- */
+
+ * ```*/
 export default function annrisk(x: any, t = 252, dim = 0) {
   if (!isarray(x)) {
     throw new Error("Input must be an array or matrix");

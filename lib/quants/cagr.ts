@@ -1,44 +1,43 @@
-/**
- * Performance metrics
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method cagr
-   * @summary Compound annual growth rate
-   * @description Compound annual growth rate
-   *
-   * @param  {number|array|matrix} x portfolio/assets returns
-   * @param  {number} p number of years (def: 1)
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array}
-   *
-   * @example
-   * var x = [0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   * var cat = ubique.cat;
-   *
-   * // CAGR for 10 months on 12 or 0.83 years
-   * ubique.cagr(x,x.length/12);
-   * // 0.229388
-   *
-   * ubique.cagr(cat(0,x,y),x.length/12);
-   * // [ [ 0.229388 ], [ 0.151999 ] ]
-   */
-  $u.cagr = function (x: any, p: any, dim: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    p = p == null ? 1 : p;
-    dim = dim == null ? 0 : dim;
+import type { array, matrix } from "../types.d.ts";
+import { isnumber, vectorfun } from "../../index.ts";
 
-    var _cagr = function (a: any, p: any) {
-      return $u.power(1 + $u.ror(a, "ret"), 1 / p) - 1;
-    };
-    if ($u.isnumber(x)) {
-      // @ts-expect-error TS(2304): Cannot find name 'a'.
-      return $u.power(a, 1 / p) - 1;
-    }
-    return $u.vectorfun(dim, x, _cagr, p);
+/**
+ * @function cagr
+ * @summary Compound Annual Growth Rate
+ * @description Compound Annual Growth Rate
+ *
+ * @param x array of values
+ * @param t array of time periods
+ * @param dim dimension 0: row, 1: column (def: 0)
+ * @return Compound Annual Growth Rate
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { cagr, cat } from "../../index.ts";
+ *
+ * // Example 1: CAGR for a single asset over time
+ * var sp500 = [2679.63, 2643.85, 2206.45, 1769.30, 1378.43, 902.40, 676.53];
+ * var date = [1998, 2000, 2005, 2010, 2015, 2020, 2022];
+ * assertEquals(cagr(sp500, date), 0.05729);
+ *
+ * // Example 2: CAGR for multiple assets with the same time series
+ * assertEquals(cagr(cat(0, sp500, sp500), date), [[0.05729], [0.05729]]);
+ * ```
+ */
+export default function cagr(x: any, t: any, dim: any = 0): any {
+  if (arguments.length < 2) {
+    throw new Error("not enough input arguments");
+  }
+
+  const _cagr = function (a: any, time: any) {
+    const n = time[time.length - 1] - time[0];
+    return Math.pow(a[0] / a[a.length - 1], 1 / n) - 1;
   };
-};
+
+  if (isnumber(x)) {
+    return NaN;
+  }
+
+  return vectorfun(dim, x, _cagr, t);
+}

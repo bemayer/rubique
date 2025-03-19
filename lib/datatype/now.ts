@@ -5,14 +5,18 @@ import dayjs from "dayjs";
  * @summary Current date and time as a Unix timestamp.
  * @description Returns the current date and time as a Unix timestamp (seconds since the Unix epoch).
  *
- * @returns {number} The current Unix timestamp.
+ * @returns The current Unix timestamp.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example: Get the current Unix timestamp
  * const currentTimestamp = now();
- * assert.strictEqual(typeof currentTimestamp, 'number');
- * assert.ok(currentTimestamp > 0);
- */
+ * assertEquals(typeof currentTimestamp, 'number');
+ * // Current timestamp should be positive
+ * assertEquals(currentTimestamp > 0, true);
+ * ``` */
 export default function now() {
   return dayjs().unix();
 }

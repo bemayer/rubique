@@ -13,21 +13,25 @@ import erf from "./erf.ts";
  * @throws {Error} If no arguments are provided or if the input is out of range.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Compute the inverse error function for a positive value
- * assert.strictEqual(erfinv(0.1), 0.08885596505119545);
+ * assertEquals(erfinv(0.1), 0.08885596505119545);
  *
  * // Example 2: Compute the inverse error function for a negative value
- * assert.strictEqual(erfinv(-0.5), -0.476936236121904);
+ * assertEquals(erfinv(-0.5), -0.476936236121904);
  *
  * // Example 3: Compute the inverse error function for 0 (should return 0)
- * assert.strictEqual(erfinv(0), 0);
+ * assertEquals(erfinv(0), 0);
  *
  * // Example 4: Compute the inverse error function for 1 (should return positive infinity)
- * assert.strictEqual(erfinv(1), Infinity);
+ * assertEquals(erfinv(1), Infinity);
  *
  * // Example 5: Compute the inverse error function for -1 (should return negative infinity)
- * assert.strictEqual(erfinv(-1), -Infinity);
- */
+ * assertEquals(erfinv(-1), -Infinity);
+
+ * ```*/
 export default function erfinv(y: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

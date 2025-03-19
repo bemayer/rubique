@@ -11,6 +11,9 @@ import ismatrix from "../datatype/ismatrix.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create a 0x0 matrix
  * assert.deepStrictEqual(ones(0), []);
  *
@@ -25,7 +28,8 @@ import ismatrix from "../datatype/ismatrix.ts";
  *
  * // Example 5: Create a 2x3 matrix
  * assert.deepStrictEqual(ones(2, 3), [[1, 1, 1], [1, 1, 1]]);
- */
+
+ * ```*/
 export default function ones(...args: any[]) {
   if (args.length === 0) {
     throw new Error("not enough input arguments");

@@ -16,6 +16,9 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If input arguments are missing.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * const a = [[5,6,5],[7,8,-1]];
  * const c = [5,6,3];
  *
@@ -36,7 +39,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  *
  * // Example 6: Extract a 2D subset from a vector
  * assert.deepStrictEqual(subsetlin(c, [[0,1], [1,2]]), [[5, 6], [6, 3]]);
- */
+
+ * ```*/
 export default function subsetlin(m: any, idx: any, flag = 0) {
   if (m === undefined) {
     throw new Error("Not enough input arguments.");

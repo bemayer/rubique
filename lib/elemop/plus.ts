@@ -16,8 +16,11 @@ import ismatrix from "../datatype/ismatrix.ts";
  * @throws {Error} If the input dimensions do not agree or if no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Add two numbers
- * assert.strictEqual(plus(5, 6), 11);
+ * assertEquals(plus(5, 6), 11);
  *
  * // Example 2: Add two arrays element-wise
  * assert.deepStrictEqual(plus([5, 6, 4], [3, -1, 0]), [8, 5, 4]);
@@ -32,7 +35,8 @@ import ismatrix from "../datatype/ismatrix.ts";
  *
  * // Example 5: Add a number to each element of a matrix
  * assert.deepStrictEqual(plus([[1, 2], [3, 4]], 2), [[3, 4], [5, 6]]);
- */
+
+ * ```*/
 export default function plus(x: any, y: any) {
   if (arguments.length < 2) throw new Error("Not enough input arguments");
 

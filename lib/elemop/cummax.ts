@@ -13,6 +13,9 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Cumulative maximum of a 1D array
  * assert.deepStrictEqual(cummax([5, 6, 3]), [5, 6, 6]);
  *
@@ -21,7 +24,8 @@ import vectorfun from "../datatype/vectorfun.ts";
  *
  * // Example 3: Cumulative maximum of a matrix along rows (dim=0)
  * assert.deepStrictEqual(cummax([[5, 6, 5], [7, 8, -1]], 0), [[5, 6, 6], [7, 8, 8]]);
- */
+
+ * ```*/
 export default function cummax(x: any, dim = 1) {
   if (x === undefined) {
     throw new Error("Not enough input arguments");

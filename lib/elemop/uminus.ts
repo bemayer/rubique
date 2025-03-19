@@ -10,15 +10,19 @@
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Unary minus on a single number
- * assert.strictEqual(uminus(-5), 5);
+ * assertEquals(uminus(-5), 5);
  *
  * // Example 2: Unary minus on an array of numbers
  * assert.deepStrictEqual(uminus([5, 6]), [-5, -6]);
  *
  * // Example 3: Unary minus on a matrix of numbers
  * assert.deepStrictEqual(uminus([[5, 6], [-1, -3]]), [[-5, -6], [1, 3]]);
- */
+
+ * ```*/
 export default function uminus(x: any) {
   if (x === undefined) throw new Error("Not enough input arguments");
 

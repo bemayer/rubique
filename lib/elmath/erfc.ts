@@ -18,21 +18,25 @@
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Compute the complementary error function for a single value
- * assert.strictEqual(erfc(0.5), 0.47950009227675744);
+ * assertEquals(erfc(0.5), 0.47950009227675744);
  *
  * // Example 2: Compute the complementary error function for a negative value
- * assert.strictEqual(erfc(-1), 1.8427007929497148);
+ * assertEquals(erfc(-1), 1.8427007929497148);
  *
  * // Example 3: Compute the complementary error function for zero
- * assert.strictEqual(erfc(0), 1);
+ * assertEquals(erfc(0), 1);
  *
  * // Example 4: Compute the complementary error function for a large positive value
- * assert.strictEqual(erfc(2), 0.004677734981047265);
+ * assertEquals(erfc(2), 0.004677734981047265);
  *
  * // Example 5: Compute the complementary error function for a large negative value
- * assert.strictEqual(erfc(-2), 1.9953222650189527);
- */
+ * assertEquals(erfc(-2), 1.9953222650189527);
+
+ * ```*/
 export default function erfc(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

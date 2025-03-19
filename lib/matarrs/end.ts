@@ -17,6 +17,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If no arguments are provided or if the dimension is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Last index of a vector
  * console.log(end([5, 6, 3])); // 2
  *
@@ -31,7 +34,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 5: Last index of a number (returns the number itself)
  * console.log(end(5)); // 5
- */
+
+ * ```*/
 export default function end(x: any, dim = -1) {
   if (x === undefined) {
     throw new Error("Not enough input arguments");

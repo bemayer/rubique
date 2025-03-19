@@ -1,57 +1,58 @@
+import type { array, matrix } from "../types.d.ts";
+import { isnumber, isundefined } from "../../index.ts";
+
 /**
- * Performance metrics
+ * @function mdietz
+ * @summary Modified Dietz Return
+ * @description Compute the Modified Dietz Return. It takes into account the timing
+ * of the cash flows, weighting them by the time they were held in the portfolio.
+ *
+ * @param ev ending value
+ * @param bv beginning value
+ * @param cf cash flow array
+ * @param cfd cash flow dates array as fraction of the total period
+ * @return Modified Dietz Return
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { mdietz } from "../../index.ts";
+ *
+ * // Example 1: Calculate Modified Dietz Return with multiple cash flows
+ * var bv = 100000; // beginning value
+ * var ev = 110000; // ending value
+ * var cf1 = 10000; //cash flow 1 (inflow)
+ * var cf2 = 5000;  //cash flow 2 (inflow)
+ * var cf3 = -2000; //cash flow 3 (outflow)
+ * var cf = [cf1,cf2,cf3]; //cash flow array
+ * var cfd = [0.25,0.5,0.75]; //cash flow dates array as fraction of the total period
+ *
+ * assertEquals(mdietz(ev,bv,cf,cfd), 0.068627);
+ * ```
  */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method mdietz
-   * @summary Historical performance of an investment portfolio with external cash flows
-   * @description Historical performance of an investment portfolio with external cash flows
-   *
-   * @param  {number} ev ending value
-   * @param  {number} bv beginning market value
-   * @param  {number|array} cf external cashflows (inflows/outflows)
-   * @param  {number|array} cfd number of calendar days from the beginning of the period that cash flow occurs
-   * @param  {number} cd total number of calendar days in the measurement period
-   * @return {number}
-   *
-   * @example
-   * var ev = 104.4,bv = 74.2,cf = 37.1,cfd = 14, cd = 31;
-   * ubique.mdietz(ev,bv,cf,cfd,cd);
-   * // -0.07298099559862156
-   *
-   * var ev = 1200,bv = 1000,cf = [10,50,35,20],cfd = [15,38,46,79],cd = 90;
-   * ubique.mdietz(ev,bv,cf,cfd,cd);
-   * // 0.0804
-   */
-  $u.mdietz = function (ev: any, bv: any, cf: any, cfd: any, cd: any) {
-    if (arguments.length < 5) {
-      throw new Error("not enough input arguments");
-    }
-    var md = -99999;
-    var w = [];
-    if ($u.isnumber(cf)) {
-      md = (ev - bv - cf) / (bv + (cf * (1 - cfd / cd)));
-    } else {
-      if (cd <= 0) {
-        throw new Error("actual number of days in the period negative or zero");
-      }
-      for (var i = 0; i < cf.length; i++) {
-        if (cfd[i] < 0) {
-          throw new Error("number of days negative or zero");
-        }
-        w[i] = 1 - cfd[i] / cd;
-      }
-      var ttwcf = 0; //total weighted cash flows
-      for (var i = 0; i < cf.length; i++) {
-        ttwcf += w[i] * cf[i];
-      }
-      var tncf = 0; //total net cash flows
-      for (var i = 0; i < cf.length; i++) {
-        tncf += cf[i];
-      }
-      md = (ev - bv - tncf) / (bv + ttwcf);
-    }
-    return md;
-  };
-};
+export default function mdietz(ev: any, bv: any, cf: any, cfd: any): any {
+  if (arguments.length < 4) {
+    throw new Error("not enough input arguments");
+  }
+
+  if (isnumber(cf)) {
+    cf = [cf];
+  }
+
+  if (isnumber(cfd)) {
+    cfd = [cfd];
+  }
+
+  if (isundefined(cf)) {
+    cf = [];
+  }
+
+  let CF = 0;
+  let W = 0;
+  for (let i = 0; i < cf.length; i++) {
+    CF = CF + cf[i];
+    W = W + cf[i] * (1 - cfd[i]);
+  }
+
+  return (ev - bv - CF) / (bv + W);
+}

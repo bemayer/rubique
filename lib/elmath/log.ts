@@ -12,8 +12,11 @@ import isnumber from "../datatype/isnumber.ts";
  * @throws {Error} If no arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Natural logarithm of a single number
- * assert.strictEqual(log(6), 1.79176);
+ * assertEquals(log(6), 1.79176);
  *
  * // Example 2: Natural logarithm of an array of numbers
  * assert.deepStrictEqual(log([5, 6, 3]), [1.60944, 1.79176, 1.09861]);
@@ -23,7 +26,8 @@ import isnumber from "../datatype/isnumber.ts";
  *   [1.60944, 1.79176, 1.60944],
  *   [1.94591, 2.07944, 0.69315]
  * ]);
- */
+
+ * ```*/
 export default function log(x: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

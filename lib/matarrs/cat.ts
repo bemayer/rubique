@@ -19,6 +19,9 @@ import { array, matrix } from "../types.d.ts";
  * @throws {Error} If not enough input arguments are provided or if dimensions do not match for concatenation.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Vertical Concatenation (dim = 0) with numbers
  * assert.deepStrictEqual(cat(0, 1, 2, 3, 4), [[1], [2], [3], [4]]);
  *
@@ -36,7 +39,8 @@ import { array, matrix } from "../types.d.ts";
  *
  * // Example 6: Horizontal Concatenation (dim = 1) with matrix and arrays
  * assert.deepStrictEqual(cat(1, [[2, 3, 4]], [5, 6, 3], [0.5, -3, 2.3]), [[2, 3, 4, 5, 6, 3, 0.5, -3, 2.3]]);
- */
+
+ * ```*/
 export default function cat(
   dim: number,
   ...args: array | matrix

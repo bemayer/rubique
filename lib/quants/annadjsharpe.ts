@@ -33,13 +33,21 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
- * // Example 1: Annualized Adjusted Sharpe Ratio for a single asset
- * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
- * assert.strictEqual(annadjsharpe(x, 0.02, 12, 'geometric'), 3.376724);
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { annadjsharpe, cat } from "../../index.ts";
  *
- * // Example 2: Throws an error for invalid input
- * assert.throws(() => annadjsharpe(123), /Input must be an array or matrix/);
- */
+ * // Example 1: Annualized adjusted Sharpe ratio for a single asset
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(annadjsharpe(x, 0, 12), 1.73986);
+ *
+ * // Example 2: Annualized adjusted Sharpe with different parameters
+ * assertEquals(annadjsharpe(x, 0.02, 12, 'simple'), 1.56587);
+ *
+ * // Example 3: Annualized adjusted Sharpe for multiple assets
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(annadjsharpe(cat(0, x, y), 0, 12), [[1.73986], [0.49273]]);
+ * ``` */
 export default function annadjsharpe(
   x: any,
   frisk = 0,

@@ -14,6 +14,9 @@ import { flatten } from "../../index.ts";
  * @throws {Error} If dimensions are invalid or inconsistent.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Reshape a row vector into a column vector
  * assert.deepStrictEqual(reshape([5, 6, 3], 3, 1), [[5], [6], [3]]);
  *
@@ -31,7 +34,8 @@ import { flatten } from "../../index.ts";
  *
  * // Example 6: Reshape into a single-column matrix (column-wise)
  * assert.deepStrictEqual(reshape([[-1, 3, -1], [4, 5, 9]], 6, 1, 1), [[-1], [3], [-1], [4], [5], [9]]);
- */
+
+ * ```*/
 export default function reshape(
   x: array | matrix,
   m: number,

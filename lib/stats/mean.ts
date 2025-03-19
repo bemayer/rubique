@@ -18,15 +18,19 @@ import sum from "../elemop/sum.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Mean of a vector
- * assert.strictEqual(mean([5, 6, 3]), 4.66667);
+ * assertEquals(mean([5, 6, 3]), 4.66667);
  *
  * // Example 2: Mean of a matrix along rows (dim=0)
  * assert.deepStrictEqual(mean([[5, 6, 5], [7, 8, -1]]), [5.333333, 4.666667]);
  *
  * // Example 3: Mean of a matrix along columns (dim=1)
  * assert.deepStrictEqual(mean([[5, 6, 5], [7, 8, -1]], 1), [6, 7, 2]);
- */
+
+ * ```*/
 export default function mean(x: any, dim = 0) {
   if (!x) throw new Error("Not enough input arguments");
 

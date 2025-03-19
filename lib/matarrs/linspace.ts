@@ -10,6 +10,9 @@
  * @throws {Error} If fewer than 2 arguments are provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Generate 5 linearly spaced points between 1 and 10
  * assert.deepStrictEqual(linspace(1, 10, 5), [1, 3.25, 5.5, 7.75, 10]);
  *
@@ -33,7 +36,8 @@
  *   name: 'Error',
  *   message: 'Not enough input arguments',
  * });
- */
+
+ * ```*/
 export default function linspace(a: any, b: any, n = 10) {
   if (arguments.length < 2) {
     throw new Error("Not enough input arguments");

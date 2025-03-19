@@ -14,21 +14,25 @@ import erfc from "./erfc.ts";
  * @throws {Error} If no arguments are provided or if the input is out of range.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Compute the inverse complementary error function for a value less than 1
- * assert.strictEqual(erfcinv(1.5), -0.476936236121904);
+ * assertEquals(erfcinv(1.5), -0.476936236121904);
  *
  * // Example 2: Compute the inverse complementary error function for a value greater than 1
- * assert.strictEqual(erfcinv(0.5), 0.476936236121904);
+ * assertEquals(erfcinv(0.5), 0.476936236121904);
  *
  * // Example 3: Compute the inverse complementary error function for 1
- * assert.strictEqual(erfcinv(1), 0);
+ * assertEquals(erfcinv(1), 0);
  *
  * // Example 4: Compute the inverse complementary error function for 2 (should return negative infinity)
- * assert.strictEqual(erfcinv(2), -Infinity);
+ * assertEquals(erfcinv(2), -Infinity);
  *
  * // Example 5: Compute the inverse complementary error function for 0 (should return positive infinity)
- * assert.strictEqual(erfcinv(0), Infinity);
- */
+ * assertEquals(erfcinv(0), Infinity);
+
+ * ```*/
 export default function erfcinv(y: any) {
   if (arguments.length === 0) {
     throw new Error("not enough input arguments");

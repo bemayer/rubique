@@ -13,6 +13,9 @@ import vectorfun from "../datatype/vectorfun.ts";
  * @throws {Error} If no input is provided.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Cumulative sum of a 1D array
  * assert.deepStrictEqual(cumsum([5, 6, 3]), [5, 11, 14]);
  *
@@ -21,7 +24,8 @@ import vectorfun from "../datatype/vectorfun.ts";
  *
  * // Example 3: Cumulative sum of a matrix along rows (dim=0)
  * assert.deepStrictEqual(cumsum([[5, 6, 5], [7, 8, -1]], 0), [[5, 11, 16], [7, 15, 14]]);
- */
+
+ * ```*/
 export default function cumsum(x: any, dim = 1) {
   if (!x) throw new Error("Not enough input arguments");
 

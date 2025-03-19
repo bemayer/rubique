@@ -1,40 +1,44 @@
-/**
- * Descriptive Statistic
- */
-// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
-module.exports = function ($u: any) {
-  /**
-   * @method quartile
-   * @summary Quartilies of a sample
-   * @description Quartilies of a sample
-   *
-   * @param  {array|matrix} x array of values
-   * @param  {number} dim dimension 0: row, 1: column (def: 0)
-   * @return {number|array}
-   *
-   * @example
-   * var x = [ 0.003,0.026,0.015,-0.009,0.014,0.024,0.015,0.066,-0.014,0.039];
-   * var y = [-0.005,0.081,0.04,-0.037,-0.061,0.058,-0.049,-0.021,0.062,0.058];
-   *
-   * ubique.quartile(x);
-   * // [ 0.003, 0.015, 0.026 ]
-   *
-   * ubique.quartile(ubique.cat(0,x,y));
-   * // [ [ 0.003, 0.015, 0.026 ], [ -0.037, 0.0175, 0.058 ] ]
-   */
-  $u.quartile = function (x: any, dim: any) {
-    if (arguments.length === 0) {
-      throw new Error("not enough input arguments");
-    }
-    dim = dim == null ? 0 : dim;
+import type { array, matrix, numarraymatrix } from "../types.d.ts";
+import { isnumber, prctile, vectorfun } from "../../index.ts";
 
-    // @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
-    var _quartile = function (a) {
-      return [$u.prctile(a, 25), $u.prctile(a, 50), $u.prctile(a, 75)];
-    };
-    if ($u.isnumber(x)) {
-      return NaN;
-    }
-    return $u.vectorfun(dim, x, _quartile);
+/**
+ * @function quartile
+ * @summary Quartiles of a sample
+ * @description Calculates the quartiles (25th, 50th, and 75th percentiles) of the values in array x
+ *
+ * @param x The input array or matrix
+ * @param dim Optional dimension along which to compute quartiles. Default is 0 (rows)
+ * @returns Array containing the three quartile values: [Q1, Q2, Q3]
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ * import { quartile, cat } from "../../index.ts";
+ *
+ * // Example 1: Calculate quartiles of an array
+ * const x = [0.003, 0.026, 0.015, -0.009, 0.014, 0.024, 0.015, 0.066, -0.014, 0.039];
+ * assertEquals(quartile(x), [0.003, 0.015, 0.026]);
+ *
+ * // Example 2: Calculate quartiles for each row in a matrix
+ * const y = [-0.005, 0.081, 0.04, -0.037, -0.061, 0.058, -0.049, -0.021, 0.062, 0.058];
+ * assertEquals(quartile(cat(0, x, y)), [[0.003, 0.015, 0.026], [-0.037, 0.0175, 0.058]]);
+ * ```
+ */
+export default function quartile(
+  x: numarraymatrix,
+  dim: number = 0,
+): numarraymatrix {
+  const _quartile = function (a: number[]) {
+    return [
+      prctile(a, 25) as number,
+      prctile(a, 50) as number,
+      prctile(a, 75) as number,
+    ];
   };
-};
+
+  if (isnumber(x)) {
+    return NaN;
+  }
+
+  return vectorfun(dim, x, _quartile);
+}

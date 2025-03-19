@@ -19,8 +19,11 @@ import arrayfun from "../datatype/arrayfun.ts";
  * @throws {Error} If insufficient arguments are provided or if the input sizes do not match.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Divide two numbers
- * assert.strictEqual(rdivide(5, 6), 0.833333);
+ * assertEquals(rdivide(5, 6), 0.833333);
  *
  * // Example 2: Divide a matrix by a scalar
  * const a = [[5, 6, 5], [7, 8, -1]];
@@ -39,7 +42,8 @@ import arrayfun from "../datatype/arrayfun.ts";
  *
  * // Example 6: Divide a matrix by a scalar
  * assert.deepStrictEqual(rdivide(e, 3), [[3, 1.66667], [2, 0.333333]]);
- */
+
+ * ```*/
 export default function rdivide(x: any, y: any) {
   if (x === undefined || y === undefined) {
     throw new Error("Not enough input arguments");

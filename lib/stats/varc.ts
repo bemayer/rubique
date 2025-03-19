@@ -29,12 +29,15 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is invalid.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Variance of a 1D array (sample)
  * const c = [5, 6, 3];
- * assert.strictEqual(varc(c), 2.33333);
+ * assertEquals(varc(c), 2.33333);
  *
  * // Example 2: Variance of a 1D array (population)
- * assert.strictEqual(varc(c, 0), 1.55556);
+ * assertEquals(varc(c, 0), 1.55556);
  *
  * // Example 3: Variance of a 2D matrix (row-wise, population)
  * const a = [[5, 6, 5], [7, 8, -1]];
@@ -45,7 +48,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 5: Throws an error for invalid input
  * assert.throws(() => varc(123), /Input must be an array or matrix/);
- */
+
+ * ```*/
 export default function varc(x: any, flag = 1, dim = 0) {
   if (!isarray(x)) {
     throw new Error("Input must be an array or matrix");

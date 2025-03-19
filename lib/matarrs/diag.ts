@@ -15,6 +15,9 @@ import isarray from "../datatype/isarray.ts";
  * @throws {Error} If the input is neither a vector nor a matrix.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Create a diagonal matrix from a vector
  * diag([5, 6, -3]); // [[5, 0, 0], [0, 6, 0], [0, 0, -3]]
  *
@@ -35,7 +38,8 @@ import isarray from "../datatype/isarray.ts";
  *
  * // Example 7: Extract a diagonal out of bounds (diagonal 2)
  * diag([[5, 0, 0], [0, 6, 0], [0, 0, -3]], 2); // [0]
- */
+
+ * ```*/
 export default function diag(x: any, k = 0) {
   const absK = Math.abs(k);
 

@@ -15,12 +15,16 @@ import size from "./size.ts";
  * @throws {Error} - Throws an error if no input is provided or if the input is not an array.
  *
  * @example
+ * ```ts
+ * import { assertEquals } from "jsr:@std/assert";
+ *
  * // Example 1: Row vector (1D array)
- * assert.strictEqual(nrows([5, 6, 7]), 1); // 1
+ * assertEquals(nrows([5, 6, 7]), 1); // 1
  *
  * // Example 2: Matrix with multiple rows (2D array)
- * assert.strictEqual(nrows([[3, 2, 7], [4, 5, 6]]), 2); // 2
- */
+ * assertEquals(nrows([[3, 2, 7], [4, 5, 6]]), 2); // 2
+
+ * ```*/
 export default function nrows(x: any) {
   if (!x) {
     throw new Error("Not enough input arguments");
